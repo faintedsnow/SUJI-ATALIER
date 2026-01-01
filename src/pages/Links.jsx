@@ -41,7 +41,7 @@ const LINKS = [
     href: "https://vgen.co/SUJI_LAMENT",
     Icon: FaPaintBrush,
   },
-  { label: "Discord", href: "https://discord.gg/s9wF3YkwBW", Icon: FaDiscord },
+  { label: "Discord", href: "https://discord.gg/wWQ6Gvm8Dx", Icon: FaDiscord },
 ];
 
 /** ====== MOTION VARIANTS ====== **/

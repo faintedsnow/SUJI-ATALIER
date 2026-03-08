@@ -123,6 +123,7 @@ export function NavBar({
   const links = [
     { label: "Works", to: "/works" },
     { label: "About", to: "/about" },
+    { label: "Lore", to: "/lore" },
     { label: "Contact", to: "/contact" },
     { label: "Links", to: "/link" },
   ];
@@ -289,7 +290,11 @@ function NavItem({ to, children, active }) {
   return (
     <Link
       to={to}
-      className="relative rounded-full px-3 py-1 text-neutral-600 outline-none transition-colors hover:text-black dark:text-neutral-400 dark:hover:text-white"
+      className={`relative rounded-full px-3 py-1 outline-none transition-colors ${
+        active 
+          ? "text-black dark:text-white" 
+          : "text-neutral-500 hover:text-black dark:text-neutral-500 dark:hover:text-white"
+      }`}
     >
       <motion.span
         className="relative z-10"

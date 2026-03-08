@@ -11,22 +11,7 @@ const FEATURED = {
   cap: "OC sketch: stray lines, wind in the hair, and a half-smile that knows.",
 };
 
-// Gallery
-const GALLERY = [
-  { src: "/aboutpage/OC_by_Jtlr4hj_.jpg", cap: "OC illustration by Jtlr4hj" },
-  {
-    src: "/aboutpage/Oc_Reference_Sheet_by_hehehahaartowo.png",
-    cap: "Reference sheet by hehehahaartowo",
-  },
-  {
-    src: "/aboutpage/OC1_Front_by_UrsprungNull_0.png",
-    cap: "Front view by UrsprungNull",
-  },
-  {
-    src: "/aboutpage/OC1_sideprofile_by_UrsprungNull_0.PNG",
-    cap: "Side profile by UrsprungNull",
-  },
-];
+
 
 /** ====== COMPONENTS ====== **/
 
@@ -102,27 +87,18 @@ const itemVar = {
 
 export default function About() {
   /** Lightbox Logic **/
-  const ALL_IMAGES = useMemo(
-    () => [FEATURED.src, ...GALLERY.map((g) => g.src)],
-    []
-  );
-  const [lightboxIdx, setLightboxIdx] = useState(null);
-  const openLightbox = (src) => setLightboxIdx(ALL_IMAGES.indexOf(src));
-  const closeLightbox = () => setLightboxIdx(null);
-  const prev = () =>
-    setLightboxIdx((i) => (i - 1 + ALL_IMAGES.length) % ALL_IMAGES.length);
-  const next = () => setLightboxIdx((i) => (i + 1) % ALL_IMAGES.length);
+  const [lightboxOpen, setLightboxOpen] = useState(false);
+  const openLightbox = () => setLightboxOpen(true);
+  const closeLightbox = () => setLightboxOpen(false);
 
   useEffect(() => {
-    if (lightboxIdx === null) return;
+    if (!lightboxOpen) return;
     const onKey = (e) => {
       if (e.key === "Escape") closeLightbox();
-      if (e.key === "ArrowLeft") prev();
-      if (e.key === "ArrowRight") next();
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [lightboxIdx]);
+  }, [lightboxOpen]);
 
   return (
     <main
@@ -159,26 +135,24 @@ export default function About() {
           className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center mb-24"
         >
           <motion.div variants={itemVar} className="order-2 md:order-1">
-             <p className="text-lg leading-loose text-justify font-light">
-              <span className="text-4xl float-left mr-2 mt-[-6px] font-serif text-[var(--accent)]">I</span>
-              ’m <strong>Suji</strong>, a producer who builds quiet worlds out of
-              sound. Every track begins in stillness and grows from a feeling of
-              distance, like light reflecting on water. I like slow textures, fading
-              chords, and melodies that almost disappear. It’s music for moments
-              that don’t need to be loud.
-            </p>
-            <motion.blockquote
-              variants={itemVar}
-              className="mt-8 pl-6 border-l-2 border-[var(--accent)] italic text-neutral-500 dark:text-neutral-400"
-            >
-              “Somewhere between the real and the imagined — that’s where my sound lives.”
-            </motion.blockquote>
+             <div className="space-y-6 text-lg leading-loose text-justify font-light">
+               <p>
+                <span className="text-4xl float-left mr-2 mt-[-6px] font-serif text-[var(--accent)]">I</span>
+                ’m <strong>Suji</strong>, a producer and sound designer. I make music that lives somewhere between orchestral textures and fractured electronics.
+               </p>
+               <p>
+                Most of my work begins with atmosphere — slow harmonies, distant melodies, and sound design that feels half-memory, half-dream.
+               </p>
+               <p>
+                I’m interested in quiet tension, fading spaces, and sounds that feel like they belong to another place.
+               </p>
+             </div>
           </motion.div>
 
           <motion.div variants={itemVar} className="order-1 md:order-2 flex justify-center">
              <div 
                 className="relative group cursor-pointer"
-                onClick={() => openLightbox(FEATURED.src)}
+                onClick={() => openLightbox()}
              >
                 <div className="absolute -inset-2 bg-[var(--accent)]/20 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
                 <BlurImage
@@ -190,130 +164,7 @@ export default function About() {
           </motion.div>
         </motion.section>
 
-        {/* Lore Section - Clean Style */}
-        <motion.section
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 1 }}
-          className="mb-24"
-        >
-          <div className="sm:px-4">
-            <motion.h3 
-              initial={{ opacity: 0, letterSpacing: "0.5em" }}
-              whileInView={{ opacity: 1, letterSpacing: "0.1em" }}
-              transition={{ duration: 1.5 }}
-              className="text-center text-2xl font-light uppercase mb-12 text-[var(--accent)]"
-            >
-              Character Archive
-            </motion.h3>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {/* Stats */}
-              <div className="space-y-6 font-mono text-sm">
-                <motion.div 
-                  initial={{ x: -20, opacity: 0 }}
-                  whileInView={{ x: 0, opacity: 1 }}
-                  transition={{ delay: 0.2 }}
-                >
-                  <div className="text-xs text-neutral-400 uppercase mb-1">Designation</div>
-                  <div className="text-lg">LYUNE</div>
-                </motion.div>
-                <motion.div 
-                   initial={{ x: -20, opacity: 0 }}
-                   whileInView={{ x: 0, opacity: 1 }}
-                   transition={{ delay: 0.3 }}
-                >
-                  <div className="text-xs text-neutral-400 uppercase mb-1">Affinity</div>
-                  <div>Snow / Void / Echoes</div>
-                </motion.div>
-                <motion.div 
-                   initial={{ x: -20, opacity: 0 }}
-                   whileInView={{ x: 0, opacity: 1 }}
-                   transition={{ delay: 0.4 }}
-                >
-                  <div className="text-xs text-neutral-400 uppercase mb-1">Status</div>
-                  <div className="flex items-center gap-2">
-                    <span className="w-2 h-2 rounded-full bg-red-400 animate-pulse" />
-                    Wandering
-                  </div>
-                </motion.div>
-              </div>
-
-              {/* Description */}
-              <motion.div 
-                className="md:col-span-2 leading-relaxed text-neutral-600 dark:text-neutral-300 font-light"
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                transition={{ delay: 0.5, duration: 1 }}
-              >
-                <p className="mb-4">
-                  A witch bound by a divine curse to wander through countless lives. 
-                  Each world she wakes in feels colder, emptier — her memories blur like 
-                  snow falling on glass.
-                </p>
-                <p>
-                  She no longer fights the cycle; she simply walks through it, collecting 
-                  fragments of warmth that disappear by morning. In the silence between 
-                  worlds, she hums a song no one remembers — a promise left unfinished 
-                  at the edge of time.
-                </p>
-                
-                <div className="mt-8 pt-6 border-t border-dashed border-neutral-300 dark:border-neutral-700">
-                   <a
-                    href="https://soundcloud.com/suji_lament/sets/project-lyune"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="group flex items-center gap-3 text-sm hover:text-[var(--accent)] transition-colors"
-                  >
-                    <span className="w-8 h-8 flex items-center justify-center rounded-full border border-current group-hover:bg-[var(--accent)] group-hover:text-white transition-all">
-                      ▶
-                    </span>
-                    <span>Listen to Project Lyune audio logs</span>
-                  </a>
-                </div>
-              </motion.div>
-            </div>
-          </div>
-        </motion.section>
-
-        {/* Gallery Grid */}
-        <motion.section
-          variants={containerVar}
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: true, margin: "-50px" }}
-          className="mb-24"
-        >
-          <motion.h3 variants={itemVar} className="text-center text-sm uppercase tracking-widest text-neutral-400 mb-8">
-            Visual Records
-          </motion.h3>
-          
-          <div className="columns-1 sm:columns-2 gap-6 space-y-6">
-            {GALLERY.map((img, i) => (
-              <motion.div
-                key={img.src}
-                variants={itemVar}
-                className="break-inside-avoid"
-              >
-                <div 
-                  className="group relative overflow-hidden cursor-zoom-in bg-neutral-100 dark:bg-neutral-800"
-                  onClick={() => openLightbox(img.src)}
-                >
-                  <BlurImage 
-                    src={img.src} 
-                    alt={img.cap} 
-                    className="w-full transition-transform duration-700 group-hover:scale-105" 
-                  />
-                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300" />
-                  <div className="absolute bottom-0 left-0 right-0 p-4 translate-y-full group-hover:translate-y-0 transition-transform duration-300 bg-gradient-to-t from-black/80 to-transparent">
-                    <p className="text-white text-xs tracking-wide text-center">{img.cap}</p>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </motion.section>
 
         {/* Footer Quote */}
         <motion.div
@@ -328,7 +179,7 @@ export default function About() {
 
       {/* Lightbox Overlay */}
       <AnimatePresence>
-        {lightboxIdx !== null && (
+        {lightboxOpen && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -336,32 +187,16 @@ export default function About() {
             onClick={closeLightbox}
             className="fixed inset-0 z-50 bg-black/90 backdrop-blur-md flex items-center justify-center p-4"
           >
-            <button
-              onClick={(e) => { e.stopPropagation(); prev(); }}
-              className="absolute left-4 p-4 text-white/50 hover:text-white transition-colors text-4xl"
-            >
-              ‹
-            </button>
-            
             <motion.img
-              key={lightboxIdx}
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
-              src={ALL_IMAGES[lightboxIdx]}
+              src={FEATURED.src}
               className="max-h-[90vh] max-w-[90vw] object-contain shadow-2xl"
               onClick={(e) => e.stopPropagation()}
             />
-
-            <button
-              onClick={(e) => { e.stopPropagation(); next(); }}
-              className="absolute right-4 p-4 text-white/50 hover:text-white transition-colors text-4xl"
-            >
-              ›
-            </button>
-            
             <div className="absolute bottom-8 left-0 right-0 text-center text-white/50 text-sm">
-              {lightboxIdx === 0 ? FEATURED.cap : GALLERY[lightboxIdx - 1].cap}
+              {FEATURED.cap}
             </div>
           </motion.div>
         )}

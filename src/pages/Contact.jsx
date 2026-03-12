@@ -34,7 +34,7 @@ export default function Contact() {
             className="w-full max-h-[70vh] object-contain dark:invert rounded-lg md:translate-x-16 transition-transform duration-700"
           />
 
-          {/* Text overlay — desktop only (unchanged layout) */}
+          {/* Text overlay  desktop only (unchanged layout) */}
           <div className="hidden md:block absolute left-20 top-1/2 -translate-y-1/2 text-left max-w-sm">
             <h2 className="mb-3 text-4xl font-normal tracking-wide">Contact</h2>
             <p className="text-[15.5px] leading-relaxed text-neutral-700 dark:text-neutral-200">
@@ -50,12 +50,12 @@ export default function Contact() {
               </a>
             </p>
             <p className="mt-6 text-sm italic text-neutral-500 dark:text-neutral-400">
-              “Leave a message.”
+              Leave a message.
             </p>
           </div>
         </div>
 
-        {/* Mobile stack — only shows on small screens */}
+        {/* Mobile stack  only shows on small screens */}
         <div className="md:hidden mt-4 text-left">
           <h2 className="mb-2 text-3xl font-normal tracking-wide">Contact</h2>
           <p className="text-[15.5px] leading-relaxed text-neutral-700 dark:text-neutral-200">
@@ -71,7 +71,7 @@ export default function Contact() {
             </a>
           </p>
           <p className="mt-4 text-sm italic text-neutral-500 dark:text-neutral-400">
-            “Leave a message.”
+            Leave a message.
           </p>
         </div>
       </section>

@@ -22,7 +22,7 @@ const PANELS = [
       "The ground erupted, and the air trembled.",
       "The villagers were flung aside, their voices drowned beneath the dreadful roar.",
       "Within the light, the boy saw his friend being swallowed by the beam...",
-      "She tried to reach for him�",
+      "She tried to reach for him...",
       "But ended in dust.",
     ],
   },
@@ -78,7 +78,7 @@ export default function TheFirstSilence() {
           className="text-center"
         >
           <div className="font-mono text-[10px] tracking-[0.6em] text-neutral-500 uppercase mb-6">
-            Lore Chapter I
+            prologue
           </div>
           <h1 className="text-4xl md:text-6xl lg:text-7xl font-light text-white tracking-[0.15em] uppercase mb-8">
             The First Silence

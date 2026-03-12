@@ -83,7 +83,7 @@ export default function Eclipse() {
             
             <div className="relative p-1.5 bg-[#e5e5e3] dark:bg-[#030303] transition-colors duration-1000 border border-black/5 dark:border-white/5 shadow-xl">
               <img
-                src="/eclipsePlugin/eclipse_plugin.png"
+                src="/eclipsePlugin/eclipse_plugin.webp"
                 alt="eclipse plugin interface"
                 className="relative w-full h-auto grayscale-[0.3] group-hover:grayscale-0 transition-all duration-700 mix-blend-normal dark:mix-blend-lighten"
               />

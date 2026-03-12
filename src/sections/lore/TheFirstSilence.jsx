@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 const PANELS = [
   {
     id: 1,
-    src: "/story/thefirstsilence/1panel.png",
+    src: "/story/thefirstsilence/1panel.webp",
     alt: "OC and his friend looking at the light striking the village",
     text: [
       "The wind swept across the lonely peak, cold and mint-pure air threading through the hair of the two youths who stood above the peaceful village.",
@@ -16,7 +16,7 @@ const PANELS = [
   },
   {
     id: 2,
-    src: "/story/thefirstsilence/2panel.png",
+    src: "/story/thefirstsilence/2panel.webp",
     alt: "OC reaching for his friend's hand",
     text: [
       "The ground erupted, and the air trembled.",
@@ -28,7 +28,7 @@ const PANELS = [
   },
   {
     id: 3,
-    src: "/story/thefirstsilence/3panel.png",
+    src: "/story/thefirstsilence/3panel.webp",
     alt: "OC seeing the white figure and dying in the snow",
     text: [
       "No winds. No birds. Just pure silence.",

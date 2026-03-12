@@ -3,15 +3,13 @@ import { useEffect, useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 /** ====== CONFIG ====== **/
-const ACCENT = "#6C7AA8"; // brand color
+const ACCENT = "#8A0303"; // brand color
 
 // Featured image
 const FEATURED = {
   src: "/aboutpage/image_sketch_by_lunaminiss.png",
   cap: "OC sketch: stray lines, wind in the hair, and a half-smile that knows.",
 };
-
-
 
 /** ====== COMPONENTS ====== **/
 
@@ -25,9 +23,9 @@ function BlurImage({ src, alt, className = "" }) {
         loading="lazy"
         onLoad={() => setLoaded(true)}
         initial={{ opacity: 0, filter: "blur(10px)" }}
-        animate={{ 
-          opacity: loaded ? 1 : 0, 
-          filter: loaded ? "blur(0px)" : "blur(10px)" 
+        animate={{
+          opacity: loaded ? 1 : 0,
+          filter: loaded ? "blur(0px)" : "blur(10px)",
         }}
         transition={{ duration: 0.7 }}
         className="w-full h-full object-cover"
@@ -135,36 +133,43 @@ export default function About() {
           className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center mb-24"
         >
           <motion.div variants={itemVar} className="order-2 md:order-1">
-             <div className="space-y-6 text-lg leading-loose text-justify font-light">
-               <p>
-                <span className="text-4xl float-left mr-2 mt-[-6px] font-serif text-[var(--accent)]">I</span>
-                ’m <strong>Suji</strong>, a producer and sound designer. I make music that lives somewhere between orchestral textures and fractured electronics.
-               </p>
-               <p>
-                Most of my work begins with atmosphere — slow harmonies, distant melodies, and sound design that feels half-memory, half-dream.
-               </p>
-               <p>
-                I’m interested in quiet tension, fading spaces, and sounds that feel like they belong to another place.
-               </p>
-             </div>
+            <div className="space-y-6 text-lg leading-loose text-justify font-light">
+              <p>
+                <span className="text-4xl float-left mr-2 mt-[-6px] font-serif text-[var(--accent)]">
+                  I
+                </span>
+                ’m <strong>Suji</strong>, a producer and sound designer. I make
+                music that lives somewhere between orchestral textures and
+                fractured electronics.
+              </p>
+              <p>
+                Most of my work begins with atmosphere — slow harmonies, distant
+                melodies, and sound design that feels half-memory, half-dream.
+              </p>
+              <p>
+                I’m interested in quiet tension, fading spaces, and sounds that
+                feel like they belong to another place.
+              </p>
+            </div>
           </motion.div>
 
-          <motion.div variants={itemVar} className="order-1 md:order-2 flex justify-center">
-             <div 
-                className="relative group cursor-pointer"
-                onClick={() => openLightbox()}
-             >
-                <div className="absolute -inset-2 bg-[var(--accent)]/20 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-                <BlurImage
-                  src={FEATURED.src}
-                  alt="OC Sketch"
-                  className="w-64 h-64 sm:w-80 sm:h-80 object-contain invert-0 dark:invert drop-shadow-2xl transition-transform duration-500 group-hover:scale-105"
-                />
-             </div>
+          <motion.div
+            variants={itemVar}
+            className="order-1 md:order-2 flex justify-center"
+          >
+            <div
+              className="relative group cursor-pointer"
+              onClick={() => openLightbox()}
+            >
+              <div className="absolute -inset-2 bg-[var(--accent)]/20 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+              <BlurImage
+                src={FEATURED.src}
+                alt="OC Sketch"
+                className="w-64 h-64 sm:w-80 sm:h-80 object-contain invert-0 dark:invert drop-shadow-2xl transition-transform duration-500 group-hover:scale-105"
+              />
+            </div>
           </motion.div>
         </motion.section>
-
-
 
         {/* Footer Quote */}
         <motion.div

@@ -7,7 +7,7 @@ import { LuSun, LuMoon, LuPlay, LuPause } from "react-icons/lu";
 export function NavBar({
   dark,
   setDark,
-  audioSrc = "/music/you again.mp3",
+  audioSrc = "/music/glass piano pad.wav",
   targetVolume = 0.12,
 }) {
   const [open, setOpen] = useState(false);
@@ -124,6 +124,10 @@ export function NavBar({
     { label: "Works", to: "/works" },
     { label: "About", to: "/about" },
     { label: "Lore", to: "/lore" },
+    {
+      label: "Plugins",
+      children: [{ label: "eclipse", to: "/plugin/eclipse" }],
+    },
     { label: "Contact", to: "/contact" },
     { label: "Links", to: "/link" },
   ];
@@ -176,15 +180,24 @@ export function NavBar({
         {/* Desktop controls */}
         <div className="ml-auto hidden items-center gap-3 md:flex">
           <nav className="flex items-center gap-3 text-[13px]">
-            {links.map((l) => (
-              <NavItem
-                key={l.to}
-                to={l.to}
-                active={normalize(location.pathname) === normalize(l.to)}
-              >
-                {l.label}
-              </NavItem>
-            ))}
+            {links.map((l) =>
+              l.children ? (
+                <NavDropdown
+                  key={l.label}
+                  label={l.label}
+                  items={l.children}
+                  pathname={location.pathname}
+                />
+              ) : (
+                <NavItem
+                  key={l.to}
+                  to={l.to}
+                  active={normalize(location.pathname) === normalize(l.to)}
+                >
+                  {l.label}
+                </NavItem>
+              ),
+            )}
           </nav>
 
           <div className="h-5 w-px bg-black/10 dark:bg-white/10" />
@@ -260,22 +273,46 @@ export function NavBar({
             }}
           >
             <ul className="flex flex-col items-center gap-8 text-2xl font-medium tracking-tight">
-              {links.map((l, i) => (
-                <motion.li
-                  key={l.to}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.1 + i * 0.05, duration: 0.4 }}
-                >
-                  <Link
-                    to={l.to}
-                    onClick={() => setOpen(false)}
-                    className="relative block p-2 hover:text-neutral-500 transition-colors"
+              {links.map((l, i) =>
+                l.children ? (
+                  <motion.li
+                    key={l.label}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.1 + i * 0.05, duration: 0.4 }}
+                    className="flex flex-col items-center gap-3"
                   >
-                    {l.label}
-                  </Link>
-                </motion.li>
-              ))}
+                    <span className="text-neutral-400 dark:text-neutral-600 text-base font-mono tracking-widest uppercase">
+                      {l.label}
+                    </span>
+                    {l.children.map((child) => (
+                      <Link
+                        key={child.to}
+                        to={child.to}
+                        onClick={() => setOpen(false)}
+                        className="relative block p-2 hover:text-neutral-500 transition-colors"
+                      >
+                        {child.label}
+                      </Link>
+                    ))}
+                  </motion.li>
+                ) : (
+                  <motion.li
+                    key={l.to}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.1 + i * 0.05, duration: 0.4 }}
+                  >
+                    <Link
+                      to={l.to}
+                      onClick={() => setOpen(false)}
+                      className="relative block p-2 hover:text-neutral-500 transition-colors"
+                    >
+                      {l.label}
+                    </Link>
+                  </motion.li>
+                ),
+              )}
             </ul>
           </motion.nav>
         )}
@@ -286,13 +323,97 @@ export function NavBar({
 
 /* ---------- subcomponents ---------- */
 
+function NavDropdown({ label, items, pathname }) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef(null);
+  const isChildActive = items.some(
+    (c) => normalize(pathname) === normalize(c.to),
+  );
+
+  useEffect(() => {
+    const close = (e) => {
+      if (ref.current && !ref.current.contains(e.target)) setOpen(false);
+    };
+    document.addEventListener("pointerdown", close);
+    return () => document.removeEventListener("pointerdown", close);
+  }, []);
+
+  return (
+    <div ref={ref} className="relative">
+      <button
+        onClick={() => setOpen((o) => !o)}
+        className={`relative rounded-full px-3 py-1 outline-none transition-colors text-[13px] flex items-center gap-1 ${
+          isChildActive
+            ? "text-black dark:text-white"
+            : "text-neutral-500 hover:text-black dark:text-neutral-500 dark:hover:text-white"
+        }`}
+      >
+        <motion.span
+          className="relative z-10"
+          whileHover={{ y: -1 }}
+          transition={{ type: "spring", stiffness: 300, damping: 20 }}
+        >
+          {label}
+        </motion.span>
+        <svg
+          className={`w-3 h-3 transition-transform duration-200 ${open ? "rotate-180" : ""}`}
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          strokeWidth={2}
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M19 9l-7 7-7-7"
+          />
+        </svg>
+        <AnimatePresence>
+          {isChildActive && (
+            <motion.span
+              layoutId="nav-pill"
+              className="absolute inset-0 rounded-full bg-black/5 dark:bg-white/10 -z-0"
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.9 }}
+              transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+            />
+          )}
+        </AnimatePresence>
+      </button>
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            initial={{ opacity: 0, y: 6 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 6 }}
+            transition={{ duration: 0.2 }}
+            className="absolute top-full left-0 mt-2 min-w-[140px] rounded-lg border border-black/5 dark:border-white/10 bg-white dark:bg-neutral-900 shadow-lg py-1"
+          >
+            {items.map((child) => (
+              <Link
+                key={child.to}
+                to={child.to}
+                onClick={() => setOpen(false)}
+                className="block px-4 py-2 text-[13px] text-neutral-600 dark:text-neutral-400 hover:text-black dark:hover:text-white hover:bg-neutral-50 dark:hover:bg-neutral-800 transition-colors"
+              >
+                {child.label}
+              </Link>
+            ))}
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
+
 function NavItem({ to, children, active }) {
   return (
     <Link
       to={to}
       className={`relative rounded-full px-3 py-1 outline-none transition-colors ${
-        active 
-          ? "text-black dark:text-white" 
+        active
+          ? "text-black dark:text-white"
           : "text-neutral-500 hover:text-black dark:text-neutral-500 dark:hover:text-white"
       }`}
     >

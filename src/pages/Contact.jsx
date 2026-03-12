@@ -2,14 +2,14 @@
 import { useEffect, useRef, useState } from "react";
 
 export default function Contact() {
-  const ACCENT = "#6C7AA8";
+  const ACCENT = "#8A0303"; // Deep Crimson
   const sectionRef = useRef(null);
   const [show, setShow] = useState(false);
 
   useEffect(() => {
     const io = new IntersectionObserver(
       ([e]) => e.isIntersecting && setShow(true),
-      { threshold: 0.2 }
+      { threshold: 0.2 },
     );
     if (sectionRef.current) io.observe(sectionRef.current);
     return () => io.disconnect();

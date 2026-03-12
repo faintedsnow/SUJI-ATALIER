@@ -12,7 +12,7 @@ import {
 } from "react-icons/fa";
 
 /** ====== CONFIG ====== **/
-const ACCENT = "#6C7AA8"; // match About/Contact/Works
+const ACCENT = "#8A0303"; // match About/Contact/Works
 
 const LINKS = [
   {
@@ -71,7 +71,7 @@ export default function Links() {
       ([e]) => e.isIntersecting && setReveal(true),
       {
         threshold: 0.2,
-      }
+      },
     );
     if (sectionRef.current) io.observe(sectionRef.current);
     return () => io.disconnect();

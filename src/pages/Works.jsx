@@ -12,14 +12,16 @@ const fade = (delay = 0) => ({
 
 const LINKS = {
   soundcloudProfile: "https://soundcloud.com/suji_lament",
-  spotifyArtist: "https://open.spotify.com/artist/4Vsj7kMT96ERwjEwonlGAn?si=vZ8qsW2eTJqHTr21y2dvxw",
+  spotifyArtist:
+    "https://open.spotify.com/artist/4Vsj7kMT96ERwjEwonlGAn?si=vZ8qsW2eTJqHTr21y2dvxw",
   collabTracks: [
     "https://open.spotify.com/track/0xtK0T3aFtdn3rznYLPV3x?si=3e82be16962d4328",
     "https://open.spotify.com/track/62mTbNTMTGwrLv5zRqqCIY?si=d1a3bf1832624e18",
     "https://open.spotify.com/track/2TpoynnKEI2HU0gGZJWLJL?si=e5b0b1d7462e43b5",
   ],
   youtubeFilm: "https://www.youtube.com/watch?v=44kk_Hfv00Y",
-  youtubeMixing: "https://www.youtube.com/watch?v=jxWMFXi4LSo&list=PLh22YfAPcJpQFMMY537fpNEl71DxvGSLC",
+  youtubeMixing:
+    "https://www.youtube.com/watch?v=jxWMFXi4LSo&list=PLh22YfAPcJpQFMMY537fpNEl71DxvGSLC",
   youtubeChannel: "https://www.youtube.com/@suji_lament",
 };
 
@@ -46,9 +48,27 @@ function spotifyArtistEmbed(url) {
 /** ====== ICONS ====== **/
 function ExternalIcon({ className = "h-3 w-3" }) {
   return (
-    <svg className={className} viewBox="0 0 24 24" fill="none" aria-hidden="true">
-      <path d="M14 3h7v7M21 3l-9 9" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
-      <path d="M21 14v5a2 2 0 0 1-2 2h-5M3 10V5a2 2 0 0 1 2-2h5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" opacity="0.55" />
+    <svg
+      className={className}
+      viewBox="0 0 24 24"
+      fill="none"
+      aria-hidden="true"
+    >
+      <path
+        d="M14 3h7v7M21 3l-9 9"
+        stroke="currentColor"
+        strokeWidth="1.6"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M21 14v5a2 2 0 0 1-2 2h-5M3 10V5a2 2 0 0 1 2-2h5"
+        stroke="currentColor"
+        strokeWidth="1.6"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        opacity="0.55"
+      />
     </svg>
   );
 }
@@ -90,7 +110,11 @@ function SoundCloudProfile({ url }) {
         scrolling="no"
         frameBorder="no"
         allow="autoplay"
-        src={"https://w.soundcloud.com/player/?url=" + encodeURIComponent(url) + "&color=%238A0303&auto_play=false&hide_related=false&show_comments=false&show_user=true&show_reposts=false&show_teaser=true&visual=false"}
+        src={
+          "https://w.soundcloud.com/player/?url=" +
+          encodeURIComponent(url) +
+          "&color=%238A0303&auto_play=false&hide_related=false&show_comments=false&show_user=true&show_reposts=false&show_teaser=true&visual=false"
+        }
         loading="lazy"
         className="block filter grayscale-[0.2] hover:grayscale-0 transition-all duration-700"
       />
@@ -133,7 +157,12 @@ function SpotifyTrack({ url }) {
         className="block filter grayscale-[0.2] hover:grayscale-0 transition-all duration-700"
       />
       <div className="absolute top-2 right-2 opacity-0 hover:opacity-100 transition-opacity">
-        <a href={url} target="_blank" rel="noopener noreferrer" className="p-2 bg-black/80 text-white font-mono text-[9px] tracking-widest flex items-center justify-center">
+        <a
+          href={url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="p-2 bg-black/80 text-white font-mono text-[9px] tracking-widest flex items-center justify-center"
+        >
           <ExternalIcon />
         </a>
       </div>
@@ -149,7 +178,8 @@ function YouTubeEmbed({ url, title }) {
       const list = u.searchParams.get("list");
       const v = u.searchParams.get("v");
       if (list && v) setSrc(`https://www.youtube.com/embed/${v}?list=${list}`);
-      else if (list) setSrc(`https://www.youtube.com/embed/videoseries?list=${list}`);
+      else if (list)
+        setSrc(`https://www.youtube.com/embed/videoseries?list=${list}`);
       else if (v) setSrc(`https://www.youtube.com/embed/${v}`);
     } catch {
       setSrc(null);
@@ -171,9 +201,14 @@ function YouTubeEmbed({ url, title }) {
         />
       </div>
       <div className="absolute top-0 right-0 p-3 flex items-center justify-end pointer-events-none">
-         <a href={url} target="_blank" rel="noopener noreferrer" className="pointer-events-auto bg-[#8A0303] text-white p-2 text-[10px] font-mono hover:bg-black transition-colors shadow-lg">
-           WATCH <ExternalIcon className="inline ml-1 w-3 h-3" />
-         </a>
+        <a
+          href={url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="pointer-events-auto bg-[#8A0303] text-white p-2 text-[10px] font-mono hover:bg-black transition-colors shadow-lg"
+        >
+          WATCH <ExternalIcon className="inline ml-1 w-3 h-3" />
+        </a>
       </div>
     </Panel>
   );
@@ -187,7 +222,6 @@ export default function Works() {
       style={{ "--accent": ACCENT }}
     >
       <div className="relative z-10 mx-auto max-w-4xl">
-        
         {/* ---- Hero ---- */}
         <section className="flex flex-col items-center justify-center text-center pt-6 pb-20">
           <motion.div {...fade()} className="text-center mb-6 relative">
@@ -202,14 +236,16 @@ export default function Works() {
               className="h-[1px] bg-[var(--accent)] mx-auto mt-6 opacity-70"
             />
           </motion.div>
-          <motion.p {...fade(0.15)} className="mt-2 text-[10px] font-mono tracking-[0.2em] uppercase text-neutral-500">
+          <motion.p
+            {...fade(0.15)}
+            className="mt-2 text-[10px] font-mono tracking-[0.2em] uppercase text-neutral-500"
+          >
             Audio Archive & Projects
           </motion.p>
         </section>
 
         {/* ---- Content ---- */}
         <div className="space-y-24">
-
           {/* 1) SoundCloud */}
           <motion.section {...fade()}>
             <SectionHeader title="SoundCloud" note="STREAM / WAVEFORM" />
@@ -218,7 +254,7 @@ export default function Works() {
 
           {/* 2) Spotify Artist */}
           <motion.section {...fade()}>
-            <SectionHeader title="Spotify" note="ARTIST · RELEASES" />
+            <SectionHeader title="Spotify" note="ARTIST ï¿½ RELEASES" />
             <SpotifyArtist url={LINKS.spotifyArtist} />
           </motion.section>
 
@@ -235,45 +271,48 @@ export default function Works() {
           {/* 4) Film / Shorts */}
           <motion.section {...fade()}>
             <SectionHeader title="Film / Shorts" note="ORIGINAL SCORE" />
-            <YouTubeEmbed url={LINKS.youtubeFilm} title="Short film — music (contrib.)" />
+            <YouTubeEmbed
+              url={LINKS.youtubeFilm}
+              title="Short film ï¿½ music (contrib.)"
+            />
           </motion.section>
 
           {/* 5) Mixing / Services */}
           <motion.section {...fade()}>
             <SectionHeader title="Mixing & Post" note="YOUTUBE PLAYLIST" />
-            <YouTubeEmbed url={LINKS.youtubeMixing} title="Mixing playlist — YouTube" />
+            <YouTubeEmbed
+              url={LINKS.youtubeMixing}
+              title="Mixing playlist ï¿½ YouTube"
+            />
           </motion.section>
 
           {/* 6) Game / OST */}
           <motion.section {...fade()}>
-            <SectionHeader title="Game / OST" note="NDA — IN PROGRESS" />
+            <SectionHeader title="Game / OST" note="NDA ï¿½ IN PROGRESS" />
             <div className="p-6 sm:p-10 text-center border border-black/10 dark:border-white/10 relative bg-black/5 dark:bg-white/5">
-               <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-[var(--accent)]" />
-               <div className="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-[var(--accent)]" />
-               <p className="text-[14px] leading-[2.2] font-light text-neutral-600 dark:text-neutral-400 uppercase tracking-widest font-mono">
-                  [ Restricting Access ]
-               </p>
-               <p className="mt-4 text-[14px] leading-[2] font-serif italic text-neutral-500 max-w-xl mx-auto">
-                  I am currently scoring and sound-designing for unannounced game studios. 
-                  Titles and cues will be documented here once declassified. 
-               </p>
-               <div className="mt-8">
-                  <a href="/contact" className="inline-block text-[11px] font-mono tracking-[0.2em] border-b border-[var(--accent)] text-[var(--accent)] hover:text-black dark:hover:text-white transition-colors pb-1">
-                    INQUIRE FOR WORLD BUILDING
-                  </a>
-               </div>
+              <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-[var(--accent)]" />
+              <div className="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-[var(--accent)]" />
+              <p className="text-[14px] leading-[2.2] font-light text-neutral-600 dark:text-neutral-400 uppercase tracking-widest font-mono">
+                [ Restricting Access ]
+              </p>
+              <p className="mt-4 text-[14px] leading-[2] font-serif italic text-neutral-500 max-w-xl mx-auto">
+                I am currently scoring and sound-designing for unannounced game
+                studios. Titles and cues will be documented here once
+                declassified.
+              </p>
             </div>
           </motion.section>
-
         </div>
 
         {/* ---- Outro ---- */}
-        <motion.div {...fade()} className="mt-24 pt-16 border-t border-black/10 dark:border-white/10 text-center">
+        <motion.div
+          {...fade()}
+          className="mt-24 pt-16 border-t border-black/10 dark:border-white/10 text-center"
+        >
           <p className="text-[14px] font-serif italic text-neutral-500">
-            “The sound fades, but the feeling stays.”
+            ï¿½The sound fades, but the feeling stays.ï¿½
           </p>
         </motion.div>
-
       </div>
     </main>
   );

@@ -35,14 +35,42 @@ const STEPS = [
   },
 ];
 
+const FILTER_EFFECTS = [
+  "Filter: Basic spectral amplitude multiplier and tilt filter",
+  "Spectral Edge: Enhances or reduces spectral contrast",
+  "Phase Bloom: Randomizes harmonic phases to smear transients and blur sound",
+  "Threshold: Spectral noise gate (silences bins below the threshold)",
+  "Clip: Spectral brickwall clipper (caps bin magnitudes)",
+  "Warp: Warps the spectrum along the frequency axis",
+  "Resample: Pitch shifts the signal cleanly by octaves",
+  "Shift: Standard musical pitch shift",
+  "Drift: Inharmonic linear frequency shift (Bode shifter style)",
+  "Overtone Shift: Pitch shift that preserves relative overtone relationships",
+  "Tonal Reframe: Repitching while preserving formants",
+  "Harm Filter: Comb filter that isolates odd or even harmonics",
+  "Auto Harm: Auto-detects the fundamental and isolates its harmonics",
+  "Triangles: Imposes a triangle-wave harmonic structure",
+  "Squares: Imposes a square-wave harmonic structure",
+  "Saws: Imposes a sawtooth-wave harmonic structure",
+  "Pointy: Imposes a sharp needle-like harmonic structure",
+  "Sweep: Imposes a sweeping harmonic register",
+];
+
+const STEREO_ONLY_EFFECTS = [
+  "Vocode: Imposes the Left channel's spectral envelope onto the Right",
+  "Ch Imprint: Imprints the Left channel's exact harmonic peaks onto the Right",
+  "Ch Imprint Rev: Imprints the Right channel's exact harmonic peaks onto the Left",
+  "Cross Mix: Spectral cross-panning and mixing between channels",
+  "Morph Drift: Spectral morphing and non-linear blending",
+];
+
 export default function Eclipse() {
   return (
-    <main 
+    <main
       className="relative min-h-screen px-4 pt-20 pb-16 sm:px-6 font-libre text-neutral-800 dark:text-neutral-200 bg-[#F5F5F3] dark:bg-[#090909] transition-colors duration-1000"
       style={{ "--accent": ACCENT }}
     >
       <div className="relative z-10 mx-auto max-w-4xl">
-        
         {/* ---- Hero ---- */}
         <section className="flex flex-col items-center justify-center text-center pt-6 pb-12 lg:pt-10 lg:pb-16">
           <motion.div {...fade()} className="text-center mb-6 relative">
@@ -68,8 +96,12 @@ export default function Eclipse() {
             {...fade(0.3)}
             className="mt-6 max-w-xl text-[14px] md:text-[15px] leading-[2.2] text-justify text-neutral-600 dark:text-neutral-400 font-light"
           >
-            <span className="text-4xl float-left mr-3 mt-[-2px] font-serif text-black dark:text-white">E</span>
-            clipse is a real-time spectral processor that transforms audio into the frequency domain using FFT, then reshapes it with creative spectral processing.
+            <span className="text-4xl float-left mr-3 mt-[-2px] font-serif text-black dark:text-white">
+              E
+            </span>
+            clipse is a real-time spectral processor that transforms audio into
+            the frequency domain using FFT, then reshapes it with creative
+            spectral processing.
           </motion.p>
         </section>
 
@@ -80,7 +112,7 @@ export default function Eclipse() {
             className="relative w-full max-w-3xl group cursor-crosshair"
           >
             <div className="absolute -inset-8 bg-[radial-gradient(ellipse_at_center,var(--tw-gradient-stops))] from-[var(--accent)]/10 dark:from-[var(--accent)]/15 to-transparent blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-1000 pointer-events-none" />
-            
+
             <div className="relative p-1.5 bg-[#e5e5e3] dark:bg-[#030303] transition-colors duration-1000 border border-black/5 dark:border-white/5 shadow-xl">
               <img
                 src="/eclipsePlugin/eclipse_plugin.webp"
@@ -102,7 +134,10 @@ export default function Eclipse() {
               <div className="w-6 h-[1px] bg-black/20 dark:bg-white/20 mt-4" />
             </motion.div>
             <motion.p {...fade(0.1)}>
-               Instead of working on the waveform like traditional effects, eclipse manipulates the frequency content of sound directly, allowing you to sculpt textures, harmonics, and motion in ways that normal plugins cannot.
+              Instead of working on the waveform like traditional effects,
+              eclipse manipulates the frequency content of sound directly,
+              allowing you to sculpt textures, harmonics, and motion in ways
+              that normal plugins cannot.
             </motion.p>
           </div>
 
@@ -114,7 +149,7 @@ export default function Eclipse() {
               </h3>
               <div className="w-6 h-[1px] bg-black/20 dark:bg-white/20 mt-4" />
             </motion.div>
-            
+
             <ul className="flex flex-col gap-3">
               {DESIGNED_FOR.map((item, i) => (
                 <motion.li
@@ -122,11 +157,72 @@ export default function Eclipse() {
                   {...fade(i * 0.08)}
                   className="flex items-start gap-3 pb-2 border-b border-black/5 dark:border-white/5"
                 >
-                  <span className="font-mono text-[9px] tracking-widest text-[var(--accent)] pt-1.5">*</span>
-                  <span className="text-[14px] font-serif font-light text-neutral-600 dark:text-neutral-400 tracking-wide">{item}</span>
+                  <span className="font-mono text-[9px] tracking-widest text-[var(--accent)] pt-1.5">
+                    *
+                  </span>
+                  <span className="text-[14px] font-serif font-light text-neutral-600 dark:text-neutral-400 tracking-wide">
+                    {item}
+                  </span>
                 </motion.li>
               ))}
             </ul>
+          </div>
+        </section>
+
+        {/* ---- Filters & Effects ---- */}
+        <section className="max-w-4xl mx-auto pb-16">
+          <motion.div {...fade()} className="mb-8 text-center">
+            <h3 className="text-2xl font-serif font-light tracking-[0.2em] text-black dark:text-white">
+              Filters & Effects
+            </h3>
+            <div className="w-6 h-[1px] bg-black/20 dark:bg-white/20 mx-auto mt-4" />
+            <p className="mt-5 text-[11px] font-mono tracking-[0.14em] uppercase text-neutral-500 dark:text-neutral-500">
+              These are the filter and effect it have
+            </p>
+          </motion.div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
+            <ul className="flex flex-col gap-3">
+              {FILTER_EFFECTS.map((item, i) => (
+                <motion.li
+                  key={item}
+                  {...fade(i * 0.03)}
+                  className="flex items-start gap-3 pb-2 border-b border-black/5 dark:border-white/5"
+                >
+                  <span className="font-mono text-[9px] tracking-widest text-[var(--accent)] pt-1.5">
+                    *
+                  </span>
+                  <span className="text-[13px] font-serif font-light text-neutral-600 dark:text-neutral-400 tracking-wide leading-[1.9]">
+                    {item}
+                  </span>
+                </motion.li>
+              ))}
+            </ul>
+
+            <div>
+              <motion.h4
+                {...fade(0.08)}
+                className="text-[11px] font-mono tracking-[0.18em] uppercase text-neutral-500 dark:text-neutral-500 mb-4"
+              >
+                Stereo-Only Effects
+              </motion.h4>
+              <ul className="flex flex-col gap-3">
+                {STEREO_ONLY_EFFECTS.map((item, i) => (
+                  <motion.li
+                    key={item}
+                    {...fade(i * 0.05)}
+                    className="flex items-start gap-3 pb-2 border-b border-black/5 dark:border-white/5"
+                  >
+                    <span className="font-mono text-[9px] tracking-widest text-[var(--accent)] pt-1.5">
+                      *
+                    </span>
+                    <span className="text-[13px] font-serif font-light text-neutral-600 dark:text-neutral-400 tracking-wide leading-[1.9]">
+                      {item}
+                    </span>
+                  </motion.li>
+                ))}
+              </ul>
+            </div>
           </div>
         </section>
 
@@ -175,7 +271,11 @@ export default function Eclipse() {
                 Traditional effects process waveforms.
               </p>
               <p className="text-lg sm:text-xl tracking-[0.15em] uppercase text-black dark:text-white border-y border-black/5 dark:border-white/5 py-4">
-                eclipse processes the <span className="text-[var(--accent)] font-normal">spectrum</span> itself.
+                eclipse processes the{" "}
+                <span className="text-[var(--accent)] font-normal">
+                  spectrum
+                </span>{" "}
+                itself.
               </p>
             </div>
           </motion.div>
@@ -187,7 +287,9 @@ export default function Eclipse() {
             rel="noopener noreferrer"
             className="group relative inline-flex flex-col items-center gap-3 px-10 py-5 border border-black/20 dark:border-white/20 hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-all duration-700"
           >
-            <div className="font-serif tracking-[0.3em] text-[13px] uppercase">Acquire eclipse</div>
+            <div className="font-serif tracking-[0.3em] text-[13px] uppercase">
+              Acquire eclipse
+            </div>
             <div className="w-full flex items-center justify-between font-mono text-[9px] text-neutral-400 group-hover:text-neutral-300">
               <span>VST3</span>
               <span>/</span>
@@ -198,7 +300,10 @@ export default function Eclipse() {
 
         {/* ---- Support ---- */}
         <section className="max-w-2xl mx-auto pb-6 text-center">
-          <motion.div {...fade()} className="space-y-4 flex flex-col items-center">
+          <motion.div
+            {...fade()}
+            className="space-y-4 flex flex-col items-center"
+          >
             <h4 className="text-[9px] font-mono tracking-[0.3em] uppercase text-neutral-400 dark:text-neutral-600">
               AUTHORITY / SUPPORT
             </h4>
@@ -211,7 +316,6 @@ export default function Eclipse() {
             <div className="w-1 h-1 rounded-full bg-black/20 dark:bg-white/20 mt-4" />
           </motion.div>
         </section>
-
       </div>
     </main>
   );

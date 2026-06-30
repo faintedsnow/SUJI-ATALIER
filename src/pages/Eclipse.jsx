@@ -162,10 +162,10 @@ export default function Eclipse() {
             aria-hidden="true"
           />
           <a
-            href="mailto:sujilament@gmail.com"
+            href="mailto:purgatorialgarden@gmail.com"
             className="font-mono text-[9px] uppercase tracking-[0.18em] text-white/30 transition hover:text-white/65"
           >
-            sujilament@gmail.com
+            purgatorialgarden@gmail.com
           </a>
         </motion.footer>
       </div>

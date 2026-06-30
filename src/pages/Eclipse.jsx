@@ -8,10 +8,7 @@ const fade = (delay = 0, y = 14) => ({
   viewport: { once: true, margin: "-72px" },
   transition: { duration: 0.8, delay, ease: [0.16, 1, 0.3, 1] },
 });
-
 const FEATURES = [
-  "Spectral texture",
-  "Harmonic motion",
   "Pitch transformation",
   "Stereo morphing",
 ];
@@ -84,6 +81,7 @@ export default function Eclipse() {
             </p>
 
             <a
+              href="https://purgatorialgarden.gumroad.com/l/eclipse"
               href="https://purgatorialgarden.gumroad.com/l/eclipse"
               target="_blank"
               rel="noopener noreferrer"

@@ -1,0 +1,31 @@
+@font-face {
+    font-display: swap;
+    font-family: "Redaction";
+    font-style: normal;
+    font-weight: 400;
+    src: url(Redaction-Regular.woff2);
+}
+
+@font-face {
+    font-display: swap;
+    font-family: "Redaction";
+    font-style: normal;
+    font-weight: 600;
+    src: url(Redaction-Bold.woff2);
+}
+
+@font-face {
+    font-display: swap;
+    font-family: "Redaction";
+    font-style: italic;
+    font-weight: 400;
+    src: url(Redaction-Italic.woff2);
+}
+
+@font-face {
+    font-display: swap;
+    font-family: "Redaction-100";
+    font-style: normal;
+    font-weight: 400;
+    src: url(Redaction_100-Regular.woff2);
+}

@@ -1,5 +1,5 @@
-import { useState, useEffect, useMemo } from "react";
-import { motion, useScroll, useSpring, useMotionValue } from "framer-motion";
+import { useMemo } from "react";
+import { motion, useScroll, useSpring } from "framer-motion";
 
 const ACCENT = "#8A0303";
 
@@ -54,62 +54,6 @@ function ExternalIcon({ className = "h-3 w-3" }) {
       <path d="M14 3h7v7M21 3l-9 9" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
       <path d="M21 14v5a2 2 0 0 1-2 2h-5M3 10V5a2 2 0 0 1 2-2h5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" opacity="0.55" />
     </svg>
-  );
-}
-
-
-
-/** ====== CUSTOM CURSOR ====== **/
-function CustomCursor() {
-  const [isHovered, setIsHovered] = useState(false);
-  const cursorX = useMotionValue(-100);
-  const cursorY = useMotionValue(-100);
-  
-  const springConfig = { damping: 25, stiffness: 300, mass: 0.5 };
-  const cursorXSpring = useSpring(cursorX, springConfig);
-  const cursorYSpring = useSpring(cursorY, springConfig);
-
-  useEffect(() => {
-    const moveCursor = (e) => {
-      cursorX.set(e.clientX - 16);
-      cursorY.set(e.clientY - 16);
-    };
-
-    const handleMouseOver = (e) => {
-      if (e.target.closest('a, button, [role="button"]')) {
-        setIsHovered(true);
-      } else {
-        setIsHovered(false);
-      }
-    };
-
-    window.addEventListener("mousemove", moveCursor);
-    window.addEventListener("mouseover", handleMouseOver);
-
-    return () => {
-      window.removeEventListener("mousemove", moveCursor);
-      window.removeEventListener("mouseover", handleMouseOver);
-    };
-  }, [cursorX, cursorY]);
-
-  return (
-    <motion.div
-      className="fixed top-0 left-0 w-8 h-8 pointer-events-none z-[9999] mix-blend-difference hidden md:flex items-center justify-center"
-      style={{
-        x: cursorXSpring,
-        y: cursorYSpring,
-      }}
-    >
-      <motion.div 
-        className="bg-white rounded-full"
-        animate={{
-          width: isHovered ? 32 : 8,
-          height: isHovered ? 32 : 8,
-          opacity: isHovered ? 0.3 : 1
-        }}
-        transition={{ duration: 0.2 }}
-      />
-    </motion.div>
   );
 }
 
@@ -357,11 +301,9 @@ export default function Works() {
 
   return (
     <main
-      className="relative min-h-screen px-4 pt-24 pb-32 sm:px-6 sm:pt-32 font-libre text-neutral-800 dark:text-neutral-200 bg-[#F2F2F0] dark:bg-[#040404] transition-colors duration-1000 overflow-hidden cursor-auto md:cursor-none"
+      className="relative min-h-screen px-4 pt-24 pb-32 sm:px-6 sm:pt-32 font-libre text-neutral-800 dark:text-neutral-200 bg-[#F2F2F0] dark:bg-[#040404] transition-colors duration-1000 overflow-hidden"
       style={{ "--accent": ACCENT }}
     >
-      <CustomCursor />
-      
       {/* Scroll Progress Bar */}
       <motion.div
         className="fixed top-0 left-0 right-0 h-[2px] bg-[var(--accent)] origin-left z-[9999]"

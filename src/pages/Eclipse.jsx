@@ -19,7 +19,7 @@ function EclipseSigil() {
   return (
     <motion.svg
       viewBox="0 0 100 100"
-      className="mx-auto mb-5 h-11 w-11 text-white/35 sm:h-12 sm:w-12"
+      className="mx-auto mb-5 h-11 w-11 text-black/35 transition-colors duration-700 dark:text-white/35 sm:h-12 sm:w-12"
       fill="none"
       aria-hidden="true"
       animate={reduceMotion ? undefined : { opacity: [0.28, 0.45, 0.28] }}
@@ -59,7 +59,7 @@ export default function Eclipse() {
 
   return (
     <main
-      className="relative min-h-screen overflow-hidden bg-black px-5 pb-10 pt-16 font-libre text-white sm:px-8 sm:pt-20"
+      className="relative min-h-screen overflow-hidden bg-[#f7f7f4] px-5 pb-10 pt-16 font-libre text-neutral-950 transition-colors duration-700 dark:bg-black dark:text-white sm:px-8 sm:pt-20"
       style={{ "--accent": ACCENT }}
     >
       <div className="relative z-10 mx-auto w-full max-w-5xl">
@@ -67,25 +67,30 @@ export default function Eclipse() {
           <motion.div {...fade()}>
             <EclipseSigil />
 
-            <p className="font-mono text-[9px] uppercase tracking-[0.32em] text-white/42 sm:text-[10px]">
+            <p className="font-mono text-[9px] uppercase tracking-[0.32em] text-black/45 transition-colors duration-700 dark:text-white/42 sm:text-[10px]">
               Spectral effects plugin
             </p>
 
-            <h1 className="mt-5 text-[clamp(3.9rem,12vw,7.8rem)] font-thin uppercase leading-[0.9] tracking-[0.08em] text-white">
-              Eclipse
+            <h1 className="mt-5 flex h-[clamp(6.2rem,21vw,10.5rem)] justify-center overflow-hidden">
+              <span className="sr-only">Eclipse</span>
+              <img
+                src="/eclipsePlugin/eclipseLOGO.svg"
+                alt=""
+                aria-hidden="true"
+                className="h-auto w-[min(165vw,64rem)] max-w-none -translate-y-[32.5%] invert opacity-95 transition duration-700 dark:invert-0"
+              />
             </h1>
 
-            <p className="mx-auto mt-6 max-w-lg text-sm font-light leading-7 text-white/66 sm:text-base sm:leading-8">
+            <p className="mx-auto mt-6 max-w-lg text-sm font-light leading-7 text-black/68 transition-colors duration-700 dark:text-white/66 sm:text-base sm:leading-8">
               A real-time spectral processor for strange harmonics, ghosted
               motion, and cinematic texture.
             </p>
 
             <a
               href="https://purgatorialgarden.gumroad.com/l/eclipse"
-              href="https://purgatorialgarden.gumroad.com/l/eclipse"
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-7 inline-flex min-h-11 items-center justify-center border border-white/45 px-7 font-mono text-[10px] uppercase tracking-[0.2em] text-white/86 transition duration-500 hover:border-white hover:bg-white hover:text-black"
+              className="mt-7 inline-flex min-h-11 items-center justify-center border border-black/45 px-7 font-mono text-[10px] uppercase tracking-[0.2em] text-black/86 transition duration-500 hover:border-black hover:bg-black hover:text-white dark:border-white/45 dark:text-white/86 dark:hover:border-white dark:hover:bg-white dark:hover:text-black"
             >
               Get Eclipse
             </a>
@@ -97,9 +102,9 @@ export default function Eclipse() {
           className="-mt-3 pb-14 sm:-mt-6 sm:pb-16"
         >
           <motion.img
-            src="/eclipsePlugin/eclipseplugin.png"
+            src="/eclipsePlugin/eclipseplugin1.webp"
             alt="Eclipse spectral effects plugin interface"
-            className="mx-auto block h-auto w-full max-w-4xl grayscale contrast-[1.04] drop-shadow-[0_2rem_4rem_rgba(255,255,255,0.07)]"
+            className="mx-auto block h-auto w-full max-w-4xl grayscale contrast-[1.04] drop-shadow-[0_2rem_4rem_rgba(0,0,0,0.16)] transition-[filter] duration-700 dark:drop-shadow-[0_2rem_4rem_rgba(255,255,255,0.07)]"
             animate={reduceMotion ? undefined : { y: [0, -3, 0] }}
             transition={
               reduceMotion
@@ -109,10 +114,26 @@ export default function Eclipse() {
           />
         </motion.section>
 
+        <motion.section
+          {...fade(0.12, 18)}
+          className="mx-auto max-w-4xl pb-14 sm:pb-16"
+        >
+          <div className="overflow-hidden border border-black/[0.08] bg-black/[0.02] shadow-[0_2rem_4rem_rgba(0,0,0,0.16)] transition-colors duration-700 dark:border-white/[0.08] dark:bg-white/[0.02] dark:shadow-[0_2rem_4rem_rgba(0,0,0,0.42)]">
+            <iframe
+              className="block aspect-video w-full"
+              src="https://www.youtube-nocookie.com/embed/MDpkPblxYYQ"
+              title="Eclipse promotional video"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerPolicy="strict-origin-when-cross-origin"
+              allowFullScreen
+            />
+          </div>
+        </motion.section>
+
         <section className="mx-auto max-w-3xl py-10 text-center sm:py-14">
           <motion.p
             {...fade()}
-            className="text-base font-light leading-8 text-white/70 sm:text-lg sm:leading-9"
+            className="text-base font-light leading-8 text-black/70 transition-colors duration-700 dark:text-white/70 sm:text-lg sm:leading-9"
           >
             Eclipse reshapes incoming audio in the frequency domain, turning
             simple sounds into blurred harmonics, unstable textures, and
@@ -126,7 +147,7 @@ export default function Eclipse() {
             {FEATURES.map((feature, index) => (
               <motion.li
                 key={feature}
-                className="flex flex-col items-center gap-2 font-mono text-[9px] uppercase tracking-[0.22em] text-white/38 sm:text-[10px]"
+                className="flex flex-col items-center gap-2 font-mono text-[9px] uppercase tracking-[0.22em] text-black/42 transition-colors duration-700 dark:text-white/38 sm:text-[10px]"
                 animate={
                   reduceMotion
                     ? undefined
@@ -143,7 +164,7 @@ export default function Eclipse() {
                       }
                 }
               >
-                <span className="h-px w-8 bg-white/[0.12]" />
+                <span className="h-px w-8 bg-black/[0.12] transition-colors duration-700 dark:bg-white/[0.12]" />
                 {feature}
               </motion.li>
             ))}
@@ -152,9 +173,9 @@ export default function Eclipse() {
 
         <motion.footer
           {...fade()}
-          className="flex flex-col items-center justify-between gap-4 border-t border-white/[0.06] pt-7 text-center sm:flex-row"
+          className="flex flex-col items-center justify-between gap-4 border-t border-black/[0.08] pt-7 text-center transition-colors duration-700 dark:border-white/[0.06] sm:flex-row"
         >
-          <span className="font-mono text-[9px] uppercase tracking-[0.22em] text-white/30">
+          <span className="font-mono text-[9px] uppercase tracking-[0.22em] text-black/35 transition-colors duration-700 dark:text-white/30">
             VST3 / AU
           </span>
           <span
@@ -163,7 +184,7 @@ export default function Eclipse() {
           />
           <a
             href="mailto:purgatorialgarden@gmail.com"
-            className="font-mono text-[9px] uppercase tracking-[0.18em] text-white/30 transition hover:text-white/65"
+            className="font-mono text-[9px] uppercase tracking-[0.18em] text-black/35 transition hover:text-black/70 dark:text-white/30 dark:hover:text-white/65"
           >
             purgatorialgarden@gmail.com
           </a>

@@ -4,6 +4,7 @@ import { Routes, Route } from "react-router-dom";
 import { motion } from "motion/react";
 import { NavBar } from "./components/NavBar";
 import LoadingScreen from "./components/LoadingScreen";
+import CustomCursor from "./components/CustomCursor";
 
 import Home from "./pages/Home";
 import Works from "./pages/Works";
@@ -49,12 +50,14 @@ export default function App() {
         className={
           (dark
             ? "dark bg-neutral-950 text-neutral-100"
-            : "bg-neutral-50 text-neutral-900") + " min-h-dvh flex flex-col"
+            : "bg-neutral-50 text-neutral-900") +
+          " min-h-dvh flex flex-col cursor-auto md:cursor-none"
         }
         initial={{ opacity: 0 }}
         animate={{ opacity: loading ? 0 : 1 }}
         transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
       >
+        <CustomCursor />
         <NavBar dark={dark} setDark={setDark} />
         <div className="flex-1">
           <Routes>
@@ -73,7 +76,7 @@ export default function App() {
         </div>
 
         <footer className="font-pixel border-t border-black/5 dark:border-white/5 py-8 text-center text-xs text-neutral-500 dark:text-neutral-400">
-          © {new Date().getFullYear()} suji. All rights reserved.
+          © {new Date().getFullYear()} PurgatorialGarden. All rights reserved.
         </footer>
       </motion.div>
     </>

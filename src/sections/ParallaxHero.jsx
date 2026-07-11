@@ -25,6 +25,7 @@ function ParallaxLayerGroup({
   reverseOrder = false,
   invertedLayerIndexes = [],
   startIndex = 0,
+  mobileObjectPositionClass = "object-center",
 }) {
   const layers = useMemo(
     () =>
@@ -105,7 +106,7 @@ function ParallaxLayerGroup({
             key={layer.src}
             src={layer.src}
             alt=""
-            className={`absolute inset-0 w-full h-full object-cover select-none pointer-events-none will-change-transform transition-[filter] duration-1000 ${
+            className={`absolute inset-0 w-full h-full object-cover ${mobileObjectPositionClass} select-none pointer-events-none will-change-transform transition-[filter] duration-1000 ${
               invertedLayerIndexes.includes(Number(layer.src.match(/\/(\d+)\.png$/)?.[1])) ? "invert" : ""
             }`}
             style={{
@@ -145,9 +146,10 @@ function ParallaxLayerGroup({
  */
 export default function ParallaxHero({
   children,
-  height = "h-[calc(100vh-var(--header-h,64px))]",
+  height = "h-[calc(100svh-var(--header-h,64px))] sm:h-[calc(100vh-var(--header-h,64px))]",
   forceMotion = true,
   baseScale = 1.05, // reduced to minimize zoom while preserving edges for parallax
+  mobileScale = 1.015,
   tiltMax = { x: 3, y: 5 }, // slightly reduced tilt to avoid edges
   depthPx = { min: 10, max: 40 }, // reduced depth to prevent exceeding the container bounds at 1.05 scale
   dark = false,
@@ -163,6 +165,28 @@ export default function ParallaxHero({
   const y = useSpring(rawY, { stiffness: 120, damping: 20 });
   const activeBase = dark ? "/artFaintLyune/" : "/art/";
   const activeStartIndex = dark ? 0 : 1;
+  const [isCompactPortrait, setIsCompactPortrait] = useState(false);
+  const mobileObjectPositionClass = dark
+    ? "object-[74%_center] sm:object-center"
+    : "object-[78%_center] sm:object-center";
+  const activeScale = isCompactPortrait ? mobileScale : baseScale;
+  const activeTiltMax = isCompactPortrait ? { x: 1, y: 1.5 } : tiltMax;
+  const activeDepthPx = isCompactPortrait ? { min: 4, max: 16 } : depthPx;
+
+  useEffect(() => {
+    const query = window.matchMedia("(max-width: 640px) and (orientation: portrait)");
+    const update = () => setIsCompactPortrait(query.matches);
+
+    update();
+
+    if (query.addEventListener) {
+      query.addEventListener("change", update);
+      return () => query.removeEventListener("change", update);
+    }
+
+    query.addListener(update);
+    return () => query.removeListener(update);
+  }, []);
 
   useEffect(() => {
     const el = wrapRef.current;
@@ -204,13 +228,14 @@ export default function ParallaxHero({
           count={5} 
           startIndex={activeStartIndex}
           active
-          baseScale={baseScale}
-          tiltMax={tiltMax}
-          depthPx={depthPx}
+          baseScale={activeScale}
+          tiltMax={activeTiltMax}
+          depthPx={activeDepthPx}
           x={x}
           y={y}
           DISABLE_MOTION={DISABLE_MOTION}
           invertedLayerIndexes={[]}
+          mobileObjectPositionClass={mobileObjectPositionClass}
         />
 
         {/* Atmosphere */}

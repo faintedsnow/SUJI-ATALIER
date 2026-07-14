@@ -19,10 +19,10 @@ function EclipseSigil() {
   return (
     <motion.svg
       viewBox="0 0 100 100"
-      className="mx-auto mb-5 h-11 w-11 text-black/35 transition-colors duration-700 dark:text-white/35 sm:h-12 sm:w-12"
+      className="mx-auto mb-5 h-12 w-12 text-black/45 transition-colors duration-700 dark:text-white/45 sm:h-14 sm:w-14"
       fill="none"
       aria-hidden="true"
-      animate={reduceMotion ? undefined : { opacity: [0.28, 0.45, 0.28] }}
+      animate={reduceMotion ? undefined : { opacity: [0.38, 0.58, 0.38] }}
       transition={
         reduceMotion
           ? undefined
@@ -67,21 +67,21 @@ export default function Eclipse() {
           <motion.div {...fade()}>
             <EclipseSigil />
 
-            <p className="font-mono text-[9px] uppercase tracking-[0.32em] text-black/45 transition-colors duration-700 dark:text-white/42 sm:text-[10px]">
+            <p className="font-mono text-[9px] uppercase tracking-[0.32em] text-black/62 transition-colors duration-700 dark:text-white/62 sm:text-[10px]">
               Spectral effects plugin
             </p>
 
-            <h1 className="mt-5 flex h-[clamp(6.2rem,21vw,10.5rem)] justify-center overflow-hidden">
+            <h1 className="mt-4 flex h-[clamp(7.6rem,24vw,13.5rem)] justify-center overflow-visible sm:mt-5">
               <span className="sr-only">Eclipse</span>
               <img
                 src="/eclipsePlugin/eclipseLOGO.svg"
                 alt=""
                 aria-hidden="true"
-                className="h-auto w-[min(165vw,64rem)] max-w-none -translate-y-[32.5%] invert opacity-95 transition duration-700 dark:invert-0"
+                className="h-auto w-[min(190vw,78rem)] max-w-none -translate-y-[29%] invert opacity-95 transition duration-700 dark:invert-0"
               />
             </h1>
 
-            <p className="mx-auto mt-6 max-w-lg text-sm font-light leading-7 text-black/68 transition-colors duration-700 dark:text-white/66 sm:text-base sm:leading-8">
+            <p className="mx-auto mt-8 max-w-lg text-sm font-light leading-7 text-black/76 transition-colors duration-700 dark:text-white/76 sm:text-base sm:leading-8">
               A real-time spectral processor for strange harmonics, ghosted
               motion, and cinematic texture.
             </p>
@@ -133,7 +133,7 @@ export default function Eclipse() {
         <section className="mx-auto max-w-3xl py-10 text-center sm:py-14">
           <motion.p
             {...fade()}
-            className="text-base font-light leading-8 text-black/70 transition-colors duration-700 dark:text-white/70 sm:text-lg sm:leading-9"
+            className="text-base font-light leading-8 text-black/76 transition-colors duration-700 dark:text-white/76 sm:text-lg sm:leading-9"
           >
             Eclipse reshapes incoming audio in the frequency domain, turning
             simple sounds into blurred harmonics, unstable textures, and
@@ -147,11 +147,11 @@ export default function Eclipse() {
             {FEATURES.map((feature, index) => (
               <motion.li
                 key={feature}
-                className="flex flex-col items-center gap-2 font-mono text-[9px] uppercase tracking-[0.22em] text-black/42 transition-colors duration-700 dark:text-white/38 sm:text-[10px]"
+                className="flex flex-col items-center gap-2 font-mono text-[9px] uppercase tracking-[0.22em] text-black/56 transition-colors duration-700 dark:text-white/52 sm:text-[10px]"
                 animate={
                   reduceMotion
                     ? undefined
-                    : { opacity: [0.36, 0.52, 0.36] }
+                    : { opacity: [0.52, 0.72, 0.52] }
                 }
                 transition={
                   reduceMotion
@@ -175,7 +175,7 @@ export default function Eclipse() {
           {...fade()}
           className="flex flex-col items-center justify-between gap-4 border-t border-black/[0.08] pt-7 text-center transition-colors duration-700 dark:border-white/[0.06] sm:flex-row"
         >
-          <span className="font-mono text-[9px] uppercase tracking-[0.22em] text-black/35 transition-colors duration-700 dark:text-white/30">
+          <span className="font-mono text-[9px] uppercase tracking-[0.22em] text-black/52 transition-colors duration-700 dark:text-white/48">
             VST3 / AU
           </span>
           <span
@@ -184,7 +184,7 @@ export default function Eclipse() {
           />
           <a
             href="mailto:purgatorialgarden@gmail.com"
-            className="font-mono text-[9px] uppercase tracking-[0.18em] text-black/35 transition hover:text-black/70 dark:text-white/30 dark:hover:text-white/65"
+            className="font-mono text-[9px] uppercase tracking-[0.18em] text-black/52 transition hover:text-black/78 dark:text-white/48 dark:hover:text-white/78"
           >
             purgatorialgarden@gmail.com
           </a>

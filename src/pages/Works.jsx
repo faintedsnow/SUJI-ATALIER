@@ -11,7 +11,7 @@ const minimalFade = (delay = 0, y = 20) => ({
 });
 
 const LINKS = {
-  soundcloudProfile: "https://soundcloud.com/suji_lament",
+  soundcloudProfile: "https://soundcloud.com/faintedsnow",
   spotifyArtist: "https://open.spotify.com/artist/4Vsj7kMT96ERwjEwonlGAn?si=vZ8qsW2eTJqHTr21y2dvxw",
   collabTracks: [
     "https://open.spotify.com/track/0xtK0T3aFtdn3rznYLPV3x?si=3e82be16962d4328",
@@ -21,8 +21,8 @@ const LINKS = {
   ],
   youtubeFilm: "https://www.youtube.com/watch?v=44kk_Hfv00Y",
   youtubeMixing: "https://www.youtube.com/watch?v=aeHOki9x-gY&list=PLh22YfAPcJpR7JURN0c5M6rQfiRoPu143",
-  youtubeChannel: "https://www.youtube.com/@suji_lament",
-  lilyFantasia: "https://x.com/suji_lament/status/2055228182681592250?s=20",
+  youtubeChannel: "https://www.youtube.com/@faintedsnow",
+  lilyFantasia: "https://x.com/faintedsnow/status/2055228182681592250?s=20",
   rotaeno: "https://www.youtube.com/watch?v=QSvR5kTYc4Q",
   everlightReborn: "https://www.youtube.com/watch?v=YjzCoEd-qTk",
 };
@@ -382,7 +382,7 @@ export default function Works() {
                      <div className="w-8 h-[1px] bg-current" /> OFFICIAL CHANNEL
                    </h4>
                    <p className="text-3xl sm:text-4xl font-light text-neutral-900 dark:text-white group-hover:text-white transition-colors relative z-10">
-                     @suji_lament
+                     @faintedsnow
                    </p>
                    <div className="mt-12 flex justify-start relative z-10">
                      <span className="font-mono text-xs tracking-widest text-[var(--accent)] group-hover:text-white transition-colors flex items-center gap-2 border-b border-[var(--accent)] group-hover:border-white pb-1">

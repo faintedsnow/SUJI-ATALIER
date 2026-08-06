@@ -425,9 +425,9 @@ function RedSigil({ active }) {
         {...draw(0.16, 0.7, 1.0)}
       />
 
-      {/* custom suji sigil anchoring the line in the centre gap */}
+      {/* custom faint sigil anchoring the line in the centre gap */}
       <motion.g
-        className="about-suji-sigil"
+        className="about-faint-sigil"
         initial={{ opacity: 0, scale: 0.9 }}
         animate={active ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.9 }}
         transition={{ delay: 0.7, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
@@ -645,7 +645,7 @@ export function AboutSection() {
           transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
         >
           <p>
-            <Scramble text="ABOUT / SUJI" active={metaInView} delay={0.05} duration={900} />
+            <Scramble text="ABOUT / FAINT" active={metaInView} delay={0.05} duration={900} />
           </p>
           <span>
             <Scramble
@@ -674,7 +674,7 @@ export function AboutSection() {
           transition={{ delay: 0.14, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
         >
           <p className="about-lede">
-            suji is a composer, sound designer, and developer, building quiet little
+            faint is a composer, sound designer, and developer, building quiet little
             worlds <RedactionText label="out of cinematic fragments and strange tools">out of cinematic fragments and strange tools</RedactionText>.
           </p>
           <p className="about-copy-second">

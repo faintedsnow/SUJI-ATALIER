@@ -3,11 +3,12 @@ import { useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import {
   FaSpotify,
+  FaInstagram,
   FaSoundcloud,
   FaYoutube,
   FaTwitter,
-  FaPatreon,
   FaDiscord,
+  FaEnvelope,
 } from "react-icons/fa";
 
 const LINKS = [
@@ -17,18 +18,31 @@ const LINKS = [
     Icon: FaSpotify,
   },
   {
+    label: "Instagram",
+    href: "https://www.instagram.com/faintedsnow_/",
+    Icon: FaInstagram,
+  },
+  {
     label: "SoundCloud",
-    href: "https://soundcloud.com/suji_lament",
+    href: "https://soundcloud.com/faintedsnow",
     Icon: FaSoundcloud,
   },
   {
     label: "YouTube",
-    href: "https://www.youtube.com/@suji_lament",
+    href: "https://www.youtube.com/@faintedsnow",
     Icon: FaYoutube,
   },
-  { label: "X / Twitter", href: "https://x.com/suji_lament", Icon: FaTwitter },
-  { label: "Patreon", href: "https://patreon.com/suji", Icon: FaPatreon },
-  { label: "Discord", href: "https://discord.gg/s9wF3YkwBW", Icon: FaDiscord },
+  { label: "X / Twitter", href: "https://x.com/faintedsnow", Icon: FaTwitter },
+  {
+    label: "Email",
+    href: "mailto:purgatorialgarden@gmail.com",
+    Icon: FaEnvelope,
+  },
+  {
+    label: "Discord Server",
+    href: "https://discord.gg/mXj6dhk54K",
+    Icon: FaDiscord,
+  },
 ];
 
 export default function linkPalette({ open, onClose }) {

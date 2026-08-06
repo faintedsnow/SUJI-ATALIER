@@ -39,14 +39,14 @@ export default function Contact() {
             <h2 className="mb-3 text-4xl font-normal tracking-wide">Contact</h2>
             <p className="text-[15.5px] leading-relaxed text-neutral-700 dark:text-neutral-200">
               You can reach me through Discord:{" "}
-              <span className="font-medium">@suji_lament</span>
+              <span className="font-medium">faintedsnow.</span>
               <br />
               or email:{" "}
               <a
-                href="mailto:sujilament@gmail.com"
+                href="mailto:purgatorialgarden@gmail.com"
                 className="underline decoration-[var(--accent)] underline-offset-4 hover:text-neutral-900 dark:hover:text-white"
               >
-                sujilament@gmail.com
+                purgatorialgarden@gmail.com
               </a>
             </p>
             <p className="mt-6 text-sm italic text-neutral-500 dark:text-neutral-400">
@@ -60,14 +60,14 @@ export default function Contact() {
           <h2 className="mb-2 text-3xl font-normal tracking-wide">Contact</h2>
           <p className="text-[15.5px] leading-relaxed text-neutral-700 dark:text-neutral-200">
             You can reach me through Discord:{" "}
-            <span className="font-medium">@suji_lament</span>
+            <span className="font-medium">faintedsnow.</span>
             <br />
             or email:{" "}
             <a
-              href="mailto:sujilament@gmail.com"
+              href="mailto:purgatorialgarden@gmail.com"
               className="underline decoration-[var(--accent)] underline-offset-4 hover:text-neutral-900 dark:hover:text-white break-all"
             >
-              sujilament@gmail.com
+              purgatorialgarden@gmail.com
             </a>
           </p>
           <p className="mt-4 text-sm italic text-neutral-500 dark:text-neutral-400">

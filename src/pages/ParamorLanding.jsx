@@ -32,8 +32,8 @@ export function TypeMarkCanvas({ className = "" }) {
     const createMark = () => {
       points = [];
       const shortestSide = Math.min(width, height);
-      const centerX = width * 0.505;
-      const centerY = height * 0.52;
+      const centerX = width * 0.5;
+      const centerY = height * 0.5;
       const step = clamp(shortestSide * 0.011, 8.5, 13.5);
       const rayLength = Math.hypot(width, height) * 0.67;
       const angles = [

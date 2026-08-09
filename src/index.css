@@ -6194,7 +6194,9 @@ html.dark ::-webkit-scrollbar-thumb {
 
 .lore-community-dual-stage {
   position: relative;
+  width: 100vw;
   height: clamp(34rem, 52vw, 50rem);
+  margin-left: calc(50% - 50vw);
   overflow: hidden;
   border-top: 1px solid var(--site-line);
   border-bottom: 1px solid var(--site-line);

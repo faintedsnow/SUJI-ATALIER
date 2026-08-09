@@ -73,26 +73,26 @@ export default function linkPalette({ open, onClose }) {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 8, scale: 0.98 }}
             transition={{ duration: 0.18 }}
-            className="mx-auto mt-28 w-[min(92vw,520px)] rounded-2xl border border-black/10 bg-white p-3 shadow-2xl dark:border-white/10 dark:bg-neutral-900"
+            className="site-surface mx-auto mt-28 w-[min(92vw,520px)] rounded-2xl border p-3 shadow-2xl"
           >
             <div className="flex items-center justify-between px-2 py-1">
               <h2 className="text-sm font-semibold">link</h2>
               <button
                 onClick={onClose}
-                className="rounded-full border border-black/10 px-2 py-0.5 text-xs hover:bg-neutral-100 dark:border-white/10 dark:hover:bg-neutral-800"
+                className="rounded-full border border-[var(--site-line)] px-2 py-0.5 text-xs hover:bg-[var(--site-surface-strong)]"
               >
                 Esc
               </button>
             </div>
 
-            <nav className="mt-1 divide-y divide-black/5 dark:divide-white/5">
+            <nav className="mt-1 divide-y divide-[var(--site-line)]">
               {LINKS.map(({ href, label, Icon }) => (
                 <a
                   key={href}
                   href={href}
                   target="_blank"
                   rel="noreferrer noopener"
-                  className="group flex items-center justify-between gap-3 px-3 py-3 hover:bg-neutral-50 dark:hover:bg-neutral-800/60"
+                  className="group flex items-center justify-between gap-3 px-3 py-3 hover:bg-[var(--site-surface-strong)]"
                 >
                   <div className="flex items-center gap-3">
                     <Icon aria-hidden className="text-base" />
@@ -108,7 +108,7 @@ export default function linkPalette({ open, onClose }) {
               ))}
             </nav>
 
-            <p className="px-3 pb-2 pt-3 text-[11px] text-neutral-500 dark:text-neutral-400">
+            <p className="px-3 pb-2 pt-3 text-[11px] text-[var(--site-muted)]">
               official links · no spam · Press Esc to close
             </p>
           </motion.div>

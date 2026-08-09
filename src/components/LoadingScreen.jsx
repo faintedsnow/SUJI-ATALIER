@@ -1,246 +1,209 @@
-﻿import { useEffect, useState, useRef } from "react";
-import { motion, AnimatePresence } from "motion/react";
+import { useEffect, useState } from "react";
+import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 
-const PHRASES = [
-  "gathering spiritual energy...",
-  "forming the core...",
-  "aligning meridians...",
-  "condensing Qi...",
-  "opening the gates...",
-  "breaching the void...",
-];
+const PARALLAX_IMAGES = Array.from(
+  { length: 5 },
+  (_, index) => `/artFaintLyune/${index}.png`,
+);
 
-const FINAL_MESSAGE = "the seal is broken";
+const MINIMUM_DISPLAY_MS = 1000;
+const COMPLETION_PAUSE_MS = 650;
 
-const PARALLAX_IMAGES = [
-  ...Array.from({ length: 5 }, (_, i) => `/artFaintLyune/${i}.png`),
-];
+function preloadImages(srcs, onProgress) {
+  let completed = 0;
 
-function preloadImages(srcs) {
   return Promise.all(
     srcs.map(
       (src) =>
         new Promise((resolve) => {
-          const img = new Image();
-          img.onload = () => resolve(src);
-          img.onerror = () => resolve(src);
-          img.src = src;
+          const image = new Image();
+          const finish = () => {
+            completed += 1;
+            onProgress(Math.round((completed / srcs.length) * 100));
+            resolve(src);
+          };
+
+          image.onload = finish;
+          image.onerror = finish;
+          image.src = src;
         }),
     ),
   );
 }
 
-function CultivationSigil({ isLoaded }) {
+function CultivationSeal({ ready, reduceMotion }) {
+  const nodes = [
+    [80, 24],
+    [126, 40],
+    [126, 120],
+    [80, 136],
+    [34, 120],
+    [34, 40],
+  ];
+
   return (
-    <div className="relative w-64 h-64 mb-16 flex items-center justify-center">
-      {/* Outer Bagua-style Octagon Ring */}
-      <motion.div
-        className="absolute inset-0 border-[1px] border-neutral-300 dark:border-neutral-700 opacity-50"
-        style={{
-          clipPath:
-            "polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%)",
-        }}
-        animate={{ rotate: isLoaded ? 360 : 180 }}
-        transition={{
-          duration: isLoaded ? 4 : 20,
-          repeat: Infinity,
-          ease: "linear",
-        }}
+    <motion.svg
+      className="h-44 w-44 overflow-visible sm:h-48 sm:w-48"
+      viewBox="0 0 160 160"
+      fill="none"
+      aria-hidden="true"
+      initial={reduceMotion ? false : { opacity: 0, rotate: -12 }}
+      animate={{ opacity: 1, rotate: 0 }}
+      transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+    >
+      <motion.circle
+        cx="80"
+        cy="80"
+        r="70"
+        className="stroke-[var(--site-faint)]"
+        strokeWidth="0.8"
+        strokeDasharray="1 7"
+        style={{ transformOrigin: "80px 80px" }}
+        animate={reduceMotion ? undefined : { rotate: 360 }}
+        transition={{ duration: 24, repeat: Infinity, ease: "linear" }}
       />
 
-      {/* Reverse Rotating Inner Octagon */}
-      <motion.div
-        className="absolute inset-3 border-[1px] border-neutral-400 dark:border-neutral-500 opacity-40"
-        style={{
-          clipPath:
-            "polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%)",
-        }}
-        animate={{ rotate: isLoaded ? -360 : -180 }}
-        transition={{
-          duration: isLoaded ? 3 : 15,
-          repeat: Infinity,
-          ease: "linear",
-        }}
+      <circle
+        cx="80"
+        cy="80"
+        r="54"
+        className="stroke-[var(--site-line-strong)]"
+        strokeWidth="0.7"
       />
 
-      {/* Pulsing Core Ring */}
-      <motion.div
-        className="absolute inset-10 border-[1px] border-dashed border-neutral-900 dark:border-neutral-100 rounded-full"
-        animate={{
-          scale: isLoaded ? [1, 1.2, 1] : [1, 1.05, 1],
-          opacity: isLoaded ? [0.8, 1, 0.8] : [0.3, 0.6, 0.3],
-        }}
-        transition={{
-          duration: isLoaded ? 1 : 3,
-          repeat: Infinity,
-          ease: "easeInOut",
-        }}
+      <motion.path
+        d="M80 24 L126 120 L34 120 Z M80 136 L34 40 L126 40 Z"
+        className="stroke-[var(--site-ink)]"
+        strokeWidth="0.75"
+        strokeLinejoin="round"
+        initial={reduceMotion ? false : { pathLength: 0, opacity: 0 }}
+        animate={{ pathLength: 1, opacity: ready ? 0.85 : 0.55 }}
+        transition={{ duration: 1.15, ease: [0.22, 1, 0.36, 1] }}
       />
 
-      {/* Intricate Magic Circle SVG */}
-      <motion.svg
-        viewBox="0 0 100 100"
-        className="absolute inset-0 w-full h-full text-black dark:text-white"
-        initial={{ opacity: 0, rotate: -90 }}
-        animate={{ opacity: 1, rotate: 0 }}
-        transition={{ duration: 4, ease: "easeOut" }}
-      >
-        {/* Six-Pointed Star (Hexagram) */}
-        <motion.path
-          d="M50 15 L80 75 L20 75 Z"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="0.5"
-          initial={{ pathLength: 0 }}
-          animate={{ pathLength: 1 }}
-          transition={{ duration: 3, ease: "easeInOut" }}
-        />
-        <motion.path
-          d="M50 85 L20 25 L80 25 Z"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="0.5"
-          initial={{ pathLength: 0 }}
-          animate={{ pathLength: 1 }}
-          transition={{ duration: 3, ease: "easeInOut", delay: 0.5 }}
-        />
-
-        {/* Inner Core Symbol */}
+      {nodes.map(([cx, cy], index) => (
         <motion.circle
-          cx="50"
-          cy="50"
-          r="8"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="0.5"
-          initial={{ scale: 0 }}
-          animate={{ scale: isLoaded ? 1.5 : 1 }}
-          transition={{ delay: 1, duration: 1.5 }}
+          key={`${cx}-${cy}`}
+          cx={cx}
+          cy={cy}
+          r="1.7"
+          className="fill-[var(--site-ink)]"
+          initial={reduceMotion ? false : { opacity: 0 }}
+          animate={{ opacity: ready ? 0.9 : 0.38 }}
+          transition={{ delay: reduceMotion ? 0 : 0.3 + index * 0.07 }}
         />
-        <motion.circle
-          cx="50"
-          cy="50"
-          r="18"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="0.2"
-          strokeDasharray="2,2"
-          animate={{ rotate: 360 }}
-          style={{ transformOrigin: "center" }}
-          transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
-        />
+      ))}
 
-        {/* Outer Runes/Nodes — placed at exact hexagram vertices */}
-        {[
-          [50, 15],
-          [80, 25],
-          [80, 75],
-          [50, 85],
-          [20, 75],
-          [20, 25],
-        ].map(([cx, cy], i) => (
-          <motion.circle
-            key={i}
-            cx={cx}
-            cy={cy}
-            r="2"
-            fill="currentColor"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: isLoaded ? [1, 0.5, 1] : 0.8 }}
-            transition={{ delay: 2 + i * 0.2, duration: 2, repeat: Infinity }}
-          />
-        ))}
-      </motion.svg>
-
-      {/* Burst Effect Overlay when loaded */}
-      <AnimatePresence>
-        {isLoaded && (
-          <motion.div
-            className="absolute inset-0 bg-black dark:bg-white rounded-full mix-blend-overlay"
-            initial={{ scale: 0, opacity: 0.8 }}
-            animate={{ scale: 3, opacity: 0 }}
-            transition={{ duration: 1.5, ease: "easeOut" }}
-          />
-        )}
-      </AnimatePresence>
-    </div>
+      <motion.circle
+        cx="80"
+        cy="80"
+        r="8"
+        className="stroke-[var(--site-accent)]"
+        strokeWidth="0.9"
+        initial={reduceMotion ? false : { scale: 0 }}
+        animate={{ scale: ready ? 1.18 : 1, opacity: ready ? 0.9 : 0.65 }}
+        style={{ transformOrigin: "80px 80px" }}
+        transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+      />
+      <circle
+        cx="80"
+        cy="80"
+        r="2"
+        className="fill-[var(--site-accent)]"
+      />
+    </motion.svg>
   );
 }
 
 export default function LoadingScreen({ onFinished }) {
-  const [imagesLoaded, setImagesLoaded] = useState(false);
-  const [showFinal, setShowFinal] = useState(false);
+  const [progress, setProgress] = useState(0);
+  const [ready, setReady] = useState(false);
   const [exit, setExit] = useState(false);
-  const [phraseIndex, setPhraseIndex] = useState(() =>
-    Math.floor(Math.random() * PHRASES.length),
-  );
-
-  const intervalRef = useRef(null);
+  const reduceMotion = useReducedMotion();
 
   useEffect(() => {
-    preloadImages(PARALLAX_IMAGES).then(() => setImagesLoaded(true));
-  }, []);
+    let cancelled = false;
+    let completionTimer;
+    const startedAt = performance.now();
 
-  useEffect(() => {
-    if (imagesLoaded) return;
-    intervalRef.current = setInterval(() => {
-      setPhraseIndex((prev) => (prev + 1) % PHRASES.length);
-    }, 1500);
-    return () => clearInterval(intervalRef.current);
-  }, [imagesLoaded]);
+    preloadImages(PARALLAX_IMAGES, (nextProgress) => {
+      if (!cancelled) setProgress(nextProgress);
+    }).then(() => {
+      const remaining = Math.max(
+        0,
+        MINIMUM_DISPLAY_MS - (performance.now() - startedAt),
+      );
 
-  useEffect(() => {
-    if (!imagesLoaded) return;
-    clearInterval(intervalRef.current);
-    const finalTimer = setTimeout(() => setShowFinal(true), 800);
-    const exitTimer = setTimeout(() => setExit(true), 3500);
+      completionTimer = window.setTimeout(() => {
+        if (cancelled) return;
+        setProgress(100);
+        setReady(true);
+      }, reduceMotion ? 0 : remaining);
+    });
+
     return () => {
-      clearTimeout(finalTimer);
-      clearTimeout(exitTimer);
+      cancelled = true;
+      window.clearTimeout(completionTimer);
     };
-  }, [imagesLoaded]);
+  }, [reduceMotion]);
+
+  useEffect(() => {
+    if (!ready) return undefined;
+
+    const exitTimer = window.setTimeout(
+      () => setExit(true),
+      reduceMotion ? 80 : COMPLETION_PAUSE_MS,
+    );
+    return () => window.clearTimeout(exitTimer);
+  }, [ready, reduceMotion]);
 
   return (
     <AnimatePresence onExitComplete={onFinished}>
       {!exit && (
         <motion.div
           key="loader-root"
-          className="fixed inset-0 z-[9999] flex flex-col items-center justify-center overflow-hidden bg-white dark:bg-black text-black dark:text-white"
-          initial={{ opacity: 1, filter: "blur(0px)", scale: 1 }}
-          exit={{ opacity: 0, filter: "blur(20px)", scale: 1.05 }}
-          transition={{ duration: 2.2, ease: [0.22, 1, 0.36, 1] }}
+          className="fixed inset-0 z-[9999] flex items-center justify-center overflow-hidden bg-[var(--site-bg)] text-[var(--site-ink)]"
+          initial={{ opacity: 1 }}
+          exit={reduceMotion ? { opacity: 0 } : { opacity: 0, scale: 0.985 }}
+          transition={{ duration: reduceMotion ? 0.12 : 0.65, ease: [0.22, 1, 0.36, 1] }}
         >
-          <div className="relative flex flex-col items-center max-w-2xl px-8 w-full">
-            <CultivationSigil isLoaded={imagesLoaded} />
+          <motion.div
+            className="flex w-full max-w-xs flex-col items-center px-8 text-center"
+            initial={reduceMotion ? false : { opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <CultivationSeal ready={ready} reduceMotion={reduceMotion} />
 
-            {/* Typography */}
-            <div className="h-24 flex items-center justify-center">
-              <AnimatePresence mode="wait">
-                {!showFinal ? (
-                  <motion.h1
-                    key={PHRASES[phraseIndex]}
-                    className="text-xl md:text-2xl font-light tracking-[0.4em] uppercase text-center"
-                    initial={{ opacity: 0, y: 10, filter: "blur(8px)" }}
-                    animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                    exit={{ opacity: 0, y: -10, filter: "blur(8px)" }}
-                    transition={{ duration: 1, ease: "easeOut" }}
-                  >
-                    {PHRASES[phraseIndex]}
-                  </motion.h1>
-                ) : (
-                  <motion.h1
-                    key="final-msg"
-                    className="text-2xl md:text-3xl font-thin tracking-[0.6em] uppercase text-center"
-                    initial={{ opacity: 0, scale: 0.95, filter: "blur(12px)" }}
-                    animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
-                    transition={{ duration: 1.5, ease: [0.22, 1, 0.36, 1] }}
-                  >
-                    {FINAL_MESSAGE}
-                  </motion.h1>
-                )}
+            <div className="mt-9 h-4" role="status" aria-live="polite">
+              <AnimatePresence mode="wait" initial={false}>
+                <motion.p
+                  key={ready ? "ready" : "loading"}
+                  className="font-mono text-[9px] uppercase tracking-[0.32em] text-[var(--site-muted)]"
+                  initial={reduceMotion ? false : { opacity: 0, y: 3 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={reduceMotion ? { opacity: 0 } : { opacity: 0, y: -3 }}
+                  transition={{ duration: 0.25 }}
+                >
+                  {ready ? "The seal is broken" : "Condensing qi"}
+                </motion.p>
               </AnimatePresence>
             </div>
-          </div>
+
+            <div className="mt-5 flex w-40 items-center gap-3">
+              <div className="h-px flex-1 overflow-hidden bg-[var(--site-line)]">
+                <motion.span
+                  className="block h-full origin-left bg-[var(--site-accent)]"
+                  initial={{ scaleX: 0 }}
+                  animate={{ scaleX: progress / 100 }}
+                  transition={{ duration: reduceMotion ? 0 : 0.35, ease: [0.22, 1, 0.36, 1] }}
+                />
+              </div>
+              <span className="w-6 text-right font-mono text-[8px] tabular-nums text-[var(--site-faint)]">
+                {String(progress).padStart(3, "0")}
+              </span>
+            </div>
+          </motion.div>
         </motion.div>
       )}
     </AnimatePresence>

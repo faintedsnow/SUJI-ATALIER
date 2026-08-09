@@ -76,7 +76,7 @@ export default function Home({ dark }) {
   }, []);
 
   return (
-    <main className="pt-14 min-h-[calc(100dvh-56px)]">
+    <main className="site-page min-h-[calc(100dvh-var(--header-h))] pt-[var(--header-h)]">
       <MouseTrail />
       
       <ParallaxHero forceMotion dark={dark}>

@@ -23,7 +23,7 @@ function SoundCloudEmbed({
 
   return (
     <div
-      className={`rounded-2xl border border-black/10 dark:border-white/10 overflow-hidden shadow-sm ${className}`}
+      className={`overflow-hidden rounded-2xl border border-[var(--site-line)] bg-[var(--site-surface)] shadow-sm ${className}`}
     >
       <iframe
         title="SoundCloud Player"
@@ -34,7 +34,7 @@ function SoundCloudEmbed({
         frameBorder="no"
         loading="lazy"
         src={playerSrc.toString()}
-        className="block bg-black/5 dark:bg-white/5"
+        className="block bg-[var(--site-surface)]"
       />
     </div>
   );

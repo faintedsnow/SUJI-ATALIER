@@ -2,7 +2,6 @@
 import { useEffect, useRef, useState } from "react";
 
 export default function Contact() {
-  const ACCENT = "#8A0303"; // Deep Crimson
   const sectionRef = useRef(null);
   const [show, setShow] = useState(false);
 
@@ -17,8 +16,8 @@ export default function Contact() {
 
   return (
     <main
-      className="relative px-4 pt-20 pb-24 sm:px-6 font-libre text-neutral-800 dark:text-neutral-200"
-      style={{ ["--accent"]: ACCENT }}
+      className="site-page relative min-h-screen px-4 pb-24 pt-[calc(var(--header-h)+2rem)] font-libre sm:px-6"
+      style={{ ["--accent"]: "var(--site-accent)" }}
     >
       <section
         ref={sectionRef}
@@ -37,19 +36,19 @@ export default function Contact() {
           {/* Text overlay  desktop only (unchanged layout) */}
           <div className="hidden md:block absolute left-20 top-1/2 -translate-y-1/2 text-left max-w-sm">
             <h2 className="mb-3 text-4xl font-normal tracking-wide">Contact</h2>
-            <p className="text-[15.5px] leading-relaxed text-neutral-700 dark:text-neutral-200">
+            <p className="text-[15.5px] leading-relaxed text-[var(--site-muted)]">
               You can reach me through Discord:{" "}
               <span className="font-medium">faintedsnow.</span>
               <br />
               or email:{" "}
               <a
                 href="mailto:purgatorialgarden@gmail.com"
-                className="underline decoration-[var(--accent)] underline-offset-4 hover:text-neutral-900 dark:hover:text-white"
+                className="underline decoration-[var(--accent)] underline-offset-4 hover:text-[var(--site-ink)]"
               >
                 purgatorialgarden@gmail.com
               </a>
             </p>
-            <p className="mt-6 text-sm italic text-neutral-500 dark:text-neutral-400">
+            <p className="mt-6 text-sm italic text-[var(--site-faint)]">
               Leave a message.
             </p>
           </div>
@@ -58,19 +57,19 @@ export default function Contact() {
         {/* Mobile stack  only shows on small screens */}
         <div className="md:hidden mt-4 text-left">
           <h2 className="mb-2 text-3xl font-normal tracking-wide">Contact</h2>
-          <p className="text-[15.5px] leading-relaxed text-neutral-700 dark:text-neutral-200">
+          <p className="text-[15.5px] leading-relaxed text-[var(--site-muted)]">
             You can reach me through Discord:{" "}
             <span className="font-medium">faintedsnow.</span>
             <br />
             or email:{" "}
             <a
               href="mailto:purgatorialgarden@gmail.com"
-              className="underline decoration-[var(--accent)] underline-offset-4 hover:text-neutral-900 dark:hover:text-white break-all"
+              className="break-all underline decoration-[var(--accent)] underline-offset-4 hover:text-[var(--site-ink)]"
             >
               purgatorialgarden@gmail.com
             </a>
           </p>
-          <p className="mt-4 text-sm italic text-neutral-500 dark:text-neutral-400">
+          <p className="mt-4 text-sm italic text-[var(--site-faint)]">
             Leave a message.
           </p>
         </div>

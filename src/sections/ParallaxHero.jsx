@@ -146,7 +146,7 @@ function ParallaxLayerGroup({
  */
 export default function ParallaxHero({
   children,
-  height = "h-[calc(100svh-var(--header-h,64px))] sm:h-[calc(100vh-var(--header-h,64px))]",
+  height = "h-[calc(100svh-var(--header-h))] sm:h-[calc(100vh-var(--header-h))]",
   forceMotion = true,
   baseScale = 1.05, // reduced to minimize zoom while preserving edges for parallax
   mobileScale = 1.015,
@@ -216,7 +216,7 @@ export default function ParallaxHero({
 
   return (
     <section
-      className={`parallax-hero relative w-screen left-1/2 -translate-x-1/2 ${height} overflow-hidden transition-colors duration-1000 ${dark ? "bg-[#0B0B0C]" : "bg-neutral-50"}`}
+      className={`parallax-hero relative w-screen left-1/2 -translate-x-1/2 ${height} overflow-hidden bg-[var(--site-bg)] transition-colors duration-1000`}
     >
       <div
         ref={wrapRef}

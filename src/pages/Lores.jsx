@@ -8,10 +8,9 @@ import { motion, AnimatePresence } from "framer-motion";
  */
 function StorybookBackground() {
   return (
-    <div className="fixed inset-0 pointer-events-none z-0 bg-[#F5F5F3] dark:bg-[#090909] transition-colors duration-1000">
-      <div className="absolute inset-0 opacity-[0.03] dark:opacity-[0.02] bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
-      {/* Subtle vignette */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,rgba(0,0,0,0.1)_100%)] dark:bg-[radial-gradient(ellipse_at_center,transparent_0%,rgba(0,0,0,0.4)_100%)] transition-colors duration-1000" />
+    <div className="lore-cinema-background" aria-hidden="true">
+      <i />
+      <span />
     </div>
   );
 }
@@ -45,10 +44,10 @@ function StorybookPrologue() {
       className="w-full flex flex-col justify-center"
     >
       <div className="text-center mb-24">
-        <h2 className="text-2xl md:text-3xl font-serif font-light text-black dark:text-white tracking-[0.2em] mb-4 transition-colors duration-1000">
+        <h2 className="mb-4 font-serif text-2xl font-light tracking-[0.2em] text-[var(--site-ink)] transition-colors duration-1000 md:text-3xl">
           The First Silence
         </h2>
-        <div className="w-12 h-[1px] bg-black/20 dark:bg-white/20 mx-auto transition-colors duration-1000"></div>
+        <div className="mx-auto h-px w-12 bg-[var(--site-line-strong)] transition-colors duration-1000"></div>
       </div>
 
       <div className="space-y-10 text-justify mb-20">
@@ -58,7 +57,7 @@ function StorybookPrologue() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: index * 0.05 }}
-            className={`text-[15px] md:text-[16px] font-serif font-light text-neutral-600 dark:text-neutral-400 transition-colors duration-1000 leading-[2.4] ${index === 0 ? "first-letter:text-5xl first-letter:font-normal first-letter:float-left first-letter:mr-3 first-letter:text-black dark:first-letter:text-white first-letter:mt-[-4px]" : ""}`}
+            className={`font-serif text-[15px] font-light leading-[2.4] text-[var(--site-muted)] transition-colors duration-1000 md:text-[16px] ${index === 0 ? "first-letter:float-left first-letter:mr-3 first-letter:mt-[-4px] first-letter:text-5xl first-letter:font-normal first-letter:text-[var(--site-ink)]" : ""}`}
           >
             {line}
           </motion.p>
@@ -73,7 +72,7 @@ function StorybookPrologue() {
       >
         <Link
           to="/lore/the-first-silence"
-          className="inline-flex items-center gap-4 px-8 py-4 border border-black/20 dark:border-white/20 hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-all duration-700 font-serif tracking-[0.2em] text-sm uppercase"
+          className="inline-flex items-center gap-4 border border-[var(--site-line-strong)] px-8 py-4 font-serif text-sm uppercase tracking-[0.2em] transition-all duration-700 hover:border-[var(--site-ink)] hover:bg-[var(--site-ink)] hover:text-[var(--site-bg)]"
         >
           <span>Read Manga Chapter</span>
           <span className="font-mono text-xs">→</span>
@@ -89,40 +88,18 @@ function StorybookPrologue() {
 function CenterSigils({ charKey }) {
   const isLyune = charKey === "lyune";
   return (
-    <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 aspect-square flex items-center justify-center pointer-events-none opacity-[0.2] dark:opacity-[0.15] scale-[1.2]">
-      {/* Inner Rotating Ring */}
+    <div className="lore-character-orbit" aria-hidden="true">
       <motion.div
-        className="absolute w-[80%] aspect-square border-l border-r border-t border-b border-black dark:border-white border-dashed rounded-full transition-colors duration-1000"
+        className="lore-character-orbit-ring is-inner"
         animate={{ rotate: isLyune ? 360 : -360 }}
-        transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
+        transition={{ duration: 70, repeat: Infinity, ease: "linear" }}
       />
-
-      {/* Outer Dotted Ring */}
       <motion.div
-        className="absolute w-[100%] aspect-square border-[1px] border-black/80 dark:border-white/80 rounded-full border-dotted transition-colors duration-1000"
+        className="lore-character-orbit-ring is-outer"
         animate={{ rotate: isLyune ? -360 : 360 }}
-        transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
+        transition={{ duration: 100, repeat: Infinity, ease: "linear" }}
       />
-
-      {/* Character Specific Glyph */}
-      {isLyune ? (
-        <div className="absolute text-black/10 dark:text-white/10 transition-colors duration-1000 text-[200px] font-serif font-light blur-[1px] select-none -translate-y-4">
-          ☽
-        </div>
-      ) : (
-        <motion.div className="absolute w-[120%] aspect-square flex items-center justify-center">
-          <motion.div
-            animate={{ rotate: -360 }}
-            transition={{ duration: 50, repeat: Infinity, ease: "linear" }}
-            className="w-full h-full border border-black/20 dark:border-white/20 transition-colors duration-1000 rotate-45"
-          />
-          <motion.div
-            animate={{ rotate: 360 }}
-            transition={{ duration: 80, repeat: Infinity, ease: "linear" }}
-            className="absolute w-[90%] h-[90%] border border-black/30 dark:border-white/30 transition-colors duration-1000 rotate-12"
-          />
-        </motion.div>
-      )}
+      <span>{isLyune ? "☽" : "◇"}</span>
     </div>
   );
 }
@@ -132,58 +109,48 @@ function CenterSigils({ charKey }) {
  */
 function StorybookCharacterText({ data, onHoverStart, onHoverEnd }) {
   return (
-    <div className="w-full max-w-[500px] flex flex-col justify-center relative z-10">
-      {/* Massive Chinese Character Watermark */}
+    <article className="lore-character-copy">
       <div
-        className="absolute -left-20 xl:-left-32 top-10 text-[160px] leading-none font-serif text-black/[0.04] dark:text-white/[0.02] select-none z-[-1] transition-colors duration-1000 tracking-widest cursor-crosshair"
+        className="lore-character-watermark"
         style={{ writingMode: "vertical-rl" }}
         onMouseEnter={onHoverStart}
         onMouseLeave={onHoverEnd}
+        aria-hidden="true"
       >
         {data.id === "lyune" ? "白䌷" : "黑肋"}
       </div>
 
-      <div className="mb-16">
-        <h1 className="text-4xl lg:text-5xl font-serif font-light text-black dark:text-white transition-colors duration-1000 tracking-[0.2em] mb-4">
-          {data.name}
-        </h1>
-        <div className="flex items-center gap-4 text-[11px] font-mono tracking-[0.2em] text-neutral-500 uppercase">
+      <header className="lore-character-heading">
+        <span>Entity record / {data.record}</span>
+        <h1>{data.name}</h1>
+        <p>
           <span>{data.alias}</span>
-          <span className="w-4 h-[1px] bg-black/20 dark:bg-white/20 transition-colors duration-1000"></span>
+          <i />
           <span>{data.title2}</span>
-        </div>
-      </div>
+        </p>
+      </header>
 
-      <div className="space-y-8 text-[15px] leading-[2.4] text-neutral-600 dark:text-neutral-400 transition-colors duration-1000 font-light font-serif text-justify mb-16">
+      <div className="lore-character-narrative">
         <p>{data.text1}</p>
         <p>{data.text2}</p>
       </div>
 
-      {/* Elegant Motif/Authority Footer */}
-      <div className="border-t border-black/10 dark:border-white/10 transition-colors duration-1000 pt-8 mt-auto">
-        <div className="flex flex-col gap-6">
-          <div>
-            <div className="text-[9px] font-mono tracking-[0.3em] text-neutral-400 dark:text-neutral-600 transition-colors duration-1000 uppercase mb-3">
-              MOTIFS
-            </div>
-            <div className="flex flex-wrap gap-x-4 gap-y-2 font-serif text-[13px] text-neutral-700 dark:text-neutral-300 transition-colors duration-1000 italic">
-              {data.motifs.map((m, i) => (
-                <span key={i}>{m}</span>
-              ))}
-            </div>
-          </div>
+      <footer className="lore-character-details">
+        <section>
+          <span>Motifs</span>
+          <ul>
+            {data.motifs.map((motif) => (
+              <li key={motif}>{motif}</li>
+            ))}
+          </ul>
+        </section>
 
-          <div>
-            <div className="text-[9px] font-mono tracking-[0.3em] text-neutral-400 dark:text-neutral-600 transition-colors duration-1000 uppercase mb-3">
-              AUTHORITY : {data.auth}
-            </div>
-            <p className="text-[14px] text-neutral-500 leading-relaxed font-serif text-justify">
-              {data.authDesc}
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
+        <section>
+          <span>Authority / {data.auth}</span>
+          <p>{data.authDesc}</p>
+        </section>
+      </footer>
+    </article>
   );
 }
 
@@ -192,139 +159,437 @@ function StorybookCharacterText({ data, onHoverStart, onHoverEnd }) {
  */
 function StorybookCharacterImage({ data, isHovered }) {
   return (
-    <motion.div
-      initial={{ opacity: 0, filter: "blur(5px)" }}
-      animate={{ opacity: 1, filter: "blur(0px)" }}
-      exit={{ opacity: 0, filter: "blur(5px)" }}
-      transition={{ duration: 1.2, ease: "easeOut" }}
-      className="w-full h-full relative flex items-center justify-center pointer-events-none"
+    <motion.figure
+      initial={{ opacity: 0, filter: "blur(16px)", scale: 0.985 }}
+      animate={{ opacity: 1, filter: "blur(0px)", scale: 1 }}
+      exit={{ opacity: 0, filter: "blur(16px)", scale: 1.01 }}
+      transition={{ duration: 1.15, ease: [0.16, 1, 0.3, 1] }}
+      className="lore-character-visual"
     >
-      {/* Esoteric ASCII Background Accent */}
-      <div className="absolute top-[10%] -right-[15%] font-mono text-[9px] leading-[14px] text-neutral-400 dark:text-neutral-800 transition-colors duration-1000 opacity-[0.8] dark:opacity-50 whitespace-pre text-right hidden lg:block select-none z-0">
-        {`
-.  *  .  . *       *    .
- .   *   .    * .   *   .
-  *    *   .     .    *  
-.  *  .  . *       *    .
-   ☶ ☵ ☴
-   ☳ ☯ ☲
-   ☱ ☶ ☵
-   ||| ||
-   ||| ||
-`}
-      </div>
+      <CenterSigils charKey={data.id} />
 
-      {/* Esoteric Subtle Sigils */}
-      <div className="absolute inset-0 flex items-center justify-center z-0">
-        <CenterSigils charKey={data.id} />
-      </div>
-
-      {/* The Masked Artwork Window */}
       <div
-        className="w-full h-full relative flex items-center justify-center z-10"
+        className="lore-character-window"
         style={{
           WebkitMaskImage: data.mask,
           maskImage: data.mask,
         }}
       >
-        {/* mix-blend-normal in light mode lets the black edge frame the image like a printed cut-out. In dark mode, mix-blend-lighten fades the black into the dark bg. */}
         <img
           src={data.image}
           alt={data.name}
-          className={`absolute w-full h-full grayscale mix-blend-normal dark:mix-blend-lighten object-cover object-top transition-opacity duration-1000 ease-in-out ${isHovered && data.hoverImage ? "opacity-0" : "opacity-[0.95] dark:opacity-[0.85]"}`}
+          className={`lore-character-art ${isHovered && data.hoverImage ? "is-hidden" : "is-visible"}`}
         />
         {data.hoverImage && (
           <img
             src={data.hoverImage}
-            alt={`${data.name} Alternate`}
-            className={`absolute w-full h-full grayscale mix-blend-normal dark:mix-blend-lighten object-cover object-top transition-opacity duration-1000 ease-in-out ${isHovered ? "opacity-[0.95] dark:opacity-[0.85]" : "opacity-0"}`}
+            alt={`${data.name} alternate portrait`}
+            className={`lore-character-art ${isHovered ? "is-visible" : "is-hidden"}`}
           />
         )}
       </div>
-    </motion.div>
+
+      <figcaption className="lore-character-image-meta">
+        <span>Entity / {data.record}</span>
+        <span>Character portrait</span>
+      </figcaption>
+    </motion.figure>
   );
 }
 
 /**
  * Fan Art Gallery Component
  */
+function CommunityAsciiField({ className = "" }) {
+  const particles = [
+    { char: ".", x: "8%", delay: "-1s", duration: "8s" },
+    { char: "+", x: "24%", delay: "-5s", duration: "11s" },
+    { char: ".", x: "43%", delay: "-8s", duration: "10s" },
+    { char: "*", x: "62%", delay: "-3s", duration: "12s" },
+    { char: ".", x: "79%", delay: "-7s", duration: "9s" },
+    { char: "/", x: "93%", delay: "-4s", duration: "13s" },
+  ];
+
+  return (
+    <div className={`lore-community-ascii-field ${className}`} aria-hidden="true">
+      {particles.map((particle, index) => (
+        <i
+          key={`${particle.char}-${index}`}
+          style={{
+            "--ascii-x": particle.x,
+            "--ascii-delay": particle.delay,
+            "--ascii-duration": particle.duration,
+          }}
+        >
+          {particle.char}
+        </i>
+      ))}
+    </div>
+  );
+}
+
+function LoreParticleField({ variant, className = "" }) {
+  const particles = [
+    { x: "7%", delay: "-2s", duration: "11s", drift: "1.1rem" },
+    { x: "18%", delay: "-7s", duration: "14s", drift: "-0.8rem" },
+    { x: "31%", delay: "-4s", duration: "12s", drift: "1.6rem" },
+    { x: "46%", delay: "-10s", duration: "16s", drift: "-1.2rem" },
+    { x: "59%", delay: "-5s", duration: "13s", drift: "0.7rem" },
+    { x: "72%", delay: "-9s", duration: "15s", drift: "-1.7rem" },
+    { x: "84%", delay: "-1s", duration: "12s", drift: "1rem" },
+    { x: "94%", delay: "-6s", duration: "17s", drift: "-0.6rem" },
+  ];
+  const characters = {
+    frost: [".", "*", "+", "."],
+    ash: ["|", "/", ".", "#"],
+    silk: ["/", "\\", ".", "~"],
+  };
+
+  return (
+    <div
+      className={`lore-particle-field is-${variant} ${className}`}
+      aria-hidden="true"
+    >
+      {particles.map((particle, index) => (
+        <span
+          key={`${variant}-${index}`}
+          style={{
+            "--particle-x": particle.x,
+            "--particle-delay": particle.delay,
+            "--particle-duration": particle.duration,
+            "--particle-drift": particle.drift,
+          }}
+        >
+          {characters[variant][index % characters[variant].length]}
+        </span>
+      ))}
+    </div>
+  );
+}
+
+function CommunityMark({ variant, className = "" }) {
+  if (variant === "origin") {
+    return (
+      <svg
+        className={`lore-community-mark is-origin ${className}`}
+        viewBox="0 0 42 42"
+        fill="none"
+        aria-hidden="true"
+      >
+        <path d="M21 38V11" />
+        <path d="M21 22C14 22 9 18 8 11C15 11 20 15 21 22Z" />
+        <path d="M21 29C28 29 33 25 34 18C27 18 22 22 21 29Z" />
+        <circle cx="21" cy="38" r="1.6" />
+      </svg>
+    );
+  }
+
+  return (
+    <svg
+      className={`lore-community-mark is-spark ${className}`}
+      viewBox="0 0 54 38"
+      fill="none"
+      aria-hidden="true"
+    >
+      <path d="M27 2v14M7 6l13 12M47 6 34 18M3 27l17-5M51 27l-17-5M27 24v12" />
+    </svg>
+  );
+}
+
 function FanArtGallery() {
   const artworks = [
     {
       src: "/aboutpage/OC1_Front_by_UrsprungNull_0.png",
       artist: "UrsprungNull",
-      title: "OC Front View",
+      title: "Lyune, Front",
+      ratio: "1 / 1",
     },
     {
       src: "/aboutpage/OC1_sideprofile_by_UrsprungNull_0.PNG",
       artist: "UrsprungNull",
-      title: "OC Side Profile",
+      title: "Lyune, Profile",
+      ratio: "1 / 1",
     },
     {
       src: "/aboutpage/OC_by_Jtlr4hj_.jpg",
       artist: "Jtlr4hj_",
-      title: "OC Illustration",
+      title: "Lyune Illustration",
+      ratio: "2 / 3",
+      glyph: "{ + }",
     },
     {
       src: "/aboutpage/Oc_Reference_Sheet_by_hehehahaartowo.png",
       artist: "hehehahaartowo",
-      title: "Reference Sheet",
+      title: "Character Reference",
+      ratio: "16 / 9",
     },
     {
       src: "/aboutpage/image_sketch_by_lunaminiss.png",
       artist: "lunaminiss",
-      title: "Rough Sketch",
+      title: "Lyune Sketch",
+      ratio: "1.27 / 1",
+    },
+    {
+      src: "/aboutpage/by_UrsprungNull_0.png",
+      artist: "UrsprungNull",
+      title: "Moonlit Portrait",
+      ratio: "1 / 1",
+      glyph: "F / G",
+    },
+    {
+      src: "/aboutpage/lyune_by_UrsprungNull_0.png",
+      artist: "UrsprungNull",
+      title: "Lyune Portrait",
+      ratio: "1 / 1",
+    },
+    {
+      src: "/aboutpage/Lyune_by_asterio_mono.jpg",
+      artist: "Asterio Mono",
+      title: "Lantern Night",
+      ratio: "4 / 5",
+    },
+    {
+      src: "/aboutpage/faint_by_hehehahaartowo.png",
+      artist: "hehehahaartowo",
+      title: "Faint Illustration",
+      ratio: "601 / 860",
+      glyph: "[ * ]",
+    },
+    {
+      src: "/aboutpage/faint_by_NemuNova.jpg",
+      artist: "NemuNova",
+      title: "Faint Portrait",
+      ratio: "9 / 16",
+    },
+    {
+      src: "/aboutpage/faint_olddesign_by_hhehehahaartowo.png",
+      artist: "hehehahaartowo",
+      title: "Faint, Early Design",
+      ratio: "1 / 1",
     },
   ];
 
   return (
-    <section className="relative w-full max-w-[1400px] mx-auto px-4 lg:px-12 py-32 border-t border-black/5 dark:border-white/5 transition-colors duration-1000">
-      {/* Gallery Header */}
-      <div className="flex flex-col items-center justify-center text-center mb-20">
-        <div className="font-mono text-[10px] tracking-[0.6em] text-neutral-400 dark:text-neutral-600 transition-colors duration-1000 uppercase mb-4">
-          APPENDIX
+    <section id="community-art" className="lore-community">
+      <motion.header
+        initial={{ opacity: 0, y: 20, filter: "blur(8px)" }}
+        whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+        viewport={{ once: true, amount: 0.4 }}
+        transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+        className="lore-community-heading"
+      >
+        <div className="lore-community-kicker">
+          <span>Appendix / 01</span>
+          <span>Fourteen collected works</span>
         </div>
-        <h2 className="text-3xl font-serif font-light text-black dark:text-neutral-300 transition-colors duration-1000 tracking-[0.2em]">
-          Community Archives
-        </h2>
-        <div className="mt-6 w-12 h-[1px] bg-black/10 dark:bg-white/10 transition-colors duration-1000"></div>
+        <h2>Community art</h2>
+        <div className="lore-community-heading-note">
+          <p>
+            Artwork and interpretations from artists around the
+            PurgatorialGarden world.
+          </p>
+          <CommunityMark variant="spark" className="is-heading" />
+          <CommunityAsciiField className="is-heading" />
+        </div>
+      </motion.header>
+
+      <motion.figure
+        initial={{ opacity: 0, y: 28, filter: "blur(10px)" }}
+        whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+        viewport={{ once: true, amount: 0.18 }}
+        transition={{ duration: 1.15, ease: [0.16, 1, 0.3, 1] }}
+        className="lore-community-feature"
+      >
+        <CommunityMark variant="origin" className="is-feature" />
+        <LoreParticleField variant="silk" className="is-feature" />
+
+        <div className="lore-community-feature-rail" aria-hidden="true">
+          <span>Featured portrait / 12</span>
+          <span>PurgatorialGarden</span>
+        </div>
+
+        <figcaption>
+          <span>Community portrait / 12</span>
+          <strong>Lyune, seated</strong>
+          <small>Art by hehehahaartowo</small>
+        </figcaption>
+
+        <motion.img
+          initial={{ opacity: 0, x: 22, filter: "blur(12px)" }}
+          whileInView={{ opacity: 1, x: 0, filter: "blur(0px)" }}
+          viewport={{ once: true, amount: 0.18 }}
+          transition={{ duration: 1.3, delay: 0.12, ease: [0.16, 1, 0.3, 1] }}
+          src="/aboutpage/lyune_by_hehehahaartowo.png"
+          alt="Lyune seated character artwork by hehehahaartowo"
+          loading="lazy"
+          decoding="async"
+        />
+      </motion.figure>
+
+      <div className="lore-community-collection-heading">
+        <span>Selected records / 01 to 11</span>
+        <div className="lore-community-ascii-track" aria-hidden="true">
+          <span>{"F . A . I . N . T / G . A . R . D . E . N + "}</span>
+          <span>{"F . A . I . N . T / G . A . R . D . E . N + "}</span>
+        </div>
+        <span>Illustrations, portraits and reference work</span>
       </div>
 
-      {/* Minimal Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+      <div className="lore-community-grid" aria-label="Community artwork archive">
         {artworks.map((art, index) => (
-          <motion.div
-            key={index}
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-50px" }}
-            transition={{ duration: 0.8, delay: index * 0.1 }}
-            className="group relative flex flex-col"
+          <motion.figure
+            key={art.src}
+            initial={{ opacity: 0, y: 24, filter: "blur(8px)" }}
+            whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+            viewport={{ once: true, margin: "-8%" }}
+            transition={{
+              duration: 0.9,
+              delay: index * 0.06,
+              ease: [0.16, 1, 0.3, 1],
+            }}
+            className={`lore-community-card lore-community-card--${index + 1}`}
           >
-            {/* Image Container */}
-            <div className="w-full aspect-square overflow-hidden bg-[#e5e5e3] dark:bg-[#030303] transition-colors duration-1000 border border-black/5 dark:border-white/5 mb-4 relative">
+            <div className="lore-community-hover-particles" aria-hidden="true">
+              {[".", "+", "*", "/"].map((particle) => (
+                <span key={`${art.src}-${particle}`}>{particle}</span>
+              ))}
+            </div>
+            <div
+              className="lore-community-image"
+              style={{ aspectRatio: art.ratio }}
+            >
               <img
                 src={art.src}
                 alt={art.title}
-                className="w-full h-full object-cover grayscale opacity-80 dark:opacity-70 group-hover:opacity-100 dark:group-hover:opacity-100 group-hover:grayscale-0 transition-all duration-700 ease-out group-hover:scale-105"
+                loading="lazy"
+                decoding="async"
               />
-              {/* Subtle inner shadow/border overlay */}
-              <div className="absolute inset-0 pointer-events-none ring-1 ring-inset ring-black/5 dark:ring-white/5 transition-colors duration-1000" />
+              <span>{String(index + 1).padStart(2, "0")}</span>
+              {art.glyph && (
+                <small className="lore-community-image-glyph" aria-hidden="true">
+                  {art.glyph}
+                </small>
+              )}
             </div>
-
-            {/* Meta tags */}
-            <div className="flex flex-col px-1">
-              <span className="font-mono text-[8px] text-neutral-500 dark:text-neutral-600 transition-colors duration-1000 uppercase tracking-[0.2em] mb-1">
-                {art.artist}
-              </span>
-              <span className="font-serif text-[13px] text-neutral-600 dark:text-neutral-400 transition-colors duration-1000 italic">
-                {art.title}
-              </span>
-            </div>
-          </motion.div>
+            <figcaption>
+              <strong>{art.title}</strong>
+              <span>Art by {art.artist}</span>
+            </figcaption>
+          </motion.figure>
         ))}
       </div>
+
+      <LoreCommunityPortraits />
+
+      <footer className="lore-community-endmark">
+        <span>End of appendix / 01</span>
+        <span className="lore-community-ascii-pulse" aria-hidden="true">
+          [ . + . ]
+        </span>
+        <span>Community archive</span>
+      </footer>
     </section>
+  );
+}
+
+function LoreCommunityPortraits() {
+  const [activePortrait, setActivePortrait] = useState(null);
+  const portraits = [
+    {
+      record: "13",
+      src: "/aboutpage/lyune_by_lunaminiss.png",
+      artist: "lunaminiss",
+      className: "is-lunaminiss",
+      width: 5800,
+      height: 2900,
+    },
+    {
+      record: "14",
+      src: "/aboutpage/lyune_by_suni_vt.png",
+      artist: "suni_vt",
+      className: "is-suni",
+      width: 3840,
+      height: 2160,
+    },
+  ];
+
+  return (
+    <motion.section
+      initial={{ opacity: 0, y: 24, filter: "blur(8px)" }}
+      whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+      viewport={{ once: true, amount: 0.12 }}
+      transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1] }}
+      className="lore-community-portraits"
+      aria-labelledby="lore-community-portraits-title"
+    >
+      <header>
+        <span>Paired portraits / 13 + 14</span>
+        <h3 id="lore-community-portraits-title">Two visions of Lyune</h3>
+        <p>Two interpretations sharing one archive plate.</p>
+      </header>
+
+      <div
+        className={`lore-community-dual-stage ${activePortrait ? `is-${activePortrait}` : ""}`}
+      >
+        {portraits.map((portrait, index) => (
+          <motion.img
+            key={portrait.src}
+            initial={{ opacity: 0, x: index === 0 ? -24 : 24, filter: "blur(12px)" }}
+            whileInView={{ opacity: 1, x: 0, filter: "blur(0px)" }}
+            viewport={{ once: true, amount: 0.18 }}
+            transition={{
+              duration: 1.3,
+              delay: index * 0.12,
+              ease: [0.16, 1, 0.3, 1],
+            }}
+            className={`lore-community-dual-image ${portrait.className}`}
+            src={portrait.src}
+            alt={`Lyune character artwork by ${portrait.artist}`}
+            loading="lazy"
+            decoding="async"
+            width={portrait.width}
+            height={portrait.height}
+          />
+        ))}
+
+        <div className="lore-community-dual-axis" aria-hidden="true">
+          <span>13</span>
+          <i />
+          <span>14</span>
+        </div>
+
+        <div className="lore-community-dual-controls">
+          {portraits.map((portrait, index) => (
+            <button
+              key={portrait.record}
+              type="button"
+              className={index === 0 ? "is-left" : "is-right"}
+              onMouseEnter={() => setActivePortrait(portrait.className.slice(3))}
+              onMouseLeave={() => setActivePortrait(null)}
+              onFocus={() => setActivePortrait(portrait.className.slice(3))}
+              onBlur={() => setActivePortrait(null)}
+              onClick={() =>
+                setActivePortrait((current) =>
+                  current === portrait.className.slice(3)
+                    ? null
+                    : portrait.className.slice(3),
+                )
+              }
+              aria-pressed={activePortrait === portrait.className.slice(3)}
+              aria-label={`Focus artwork by ${portrait.artist}`}
+            >
+              <span>Community record / {portrait.record}</span>
+              <span>Art by {portrait.artist}</span>
+            </button>
+          ))}
+        </div>
+
+        <div className="lore-community-dual-hint" aria-hidden="true">
+          <span>[ focus ]</span>
+          <span>hover or tap</span>
+        </div>
+      </div>
+    </motion.section>
   );
 }
 
@@ -336,6 +601,7 @@ export default function Lores() {
     lyune: {
       type: "entity",
       id: "lyune",
+      record: "01",
       chapter: "",
       label: "Lyune",
       name: "Lyune",
@@ -351,11 +617,12 @@ export default function Lores() {
       text2:
         "When she found Faint among the ruins of the First Silence, she broke her vow and saved him using the Rib of the Giant. Now she seeks to end the cycle, even if doing so means erasing herself completely.",
       authDesc:
-        "Through the Skull of the Giant, she commands pale skulls to guide lost spirits. Yet every use bleeds her memory—names first, then faces, until only the silence remains.",
+        "Through the Skull of the Giant, she commands pale skulls to guide lost spirits. Yet every use bleeds her memory: names first, then faces, until only the silence remains.",
     },
     faint: {
       type: "entity",
       id: "faint",
+      record: "02",
       chapter: "",
       label: "Faint",
       name: "Faint",
@@ -375,6 +642,7 @@ export default function Lores() {
     prologue: {
       type: "event",
       id: "prologue",
+      record: "00",
       chapter: "PROLOGUE",
       label: "The First Silence",
     },
@@ -384,93 +652,67 @@ export default function Lores() {
   const isEntity = currentRecord.type === "entity";
 
   return (
-    <main className="relative min-h-screen w-full bg-[#F5F5F3] dark:bg-[#090909] text-neutral-600 dark:text-neutral-400 transition-colors duration-1000 font-sans flex flex-col pt-14 selection:bg-black/10 selection:text-black dark:selection:bg-white/10 dark:selection:text-white">
+    <main className="lore-classic-page site-page">
       <StorybookBackground />
 
-      <div className="relative z-10 w-full max-w-[1400px] mx-auto px-4 lg:px-12 flex flex-col flex-1 min-h-[calc(100vh-56px)]">
-        {/* Absolute Right Side: Massive Image Layer overlaying the flex span */}
-        {isEntity && (
-          <div className="hidden lg:flex absolute right-0 top-0 bottom-0 w-[55%] xl:w-[60%] items-center justify-center -z-0">
-            <AnimatePresence mode="wait">
-              <StorybookCharacterImage
-                key={activeTab}
-                data={currentRecord}
-                isHovered={isWatermarkHovered}
-              />
-            </AnimatePresence>
+      <section className="lore-cinema-stage">
+        <nav className="lore-cinema-nav" aria-label="Lore records">
+          <div className="lore-cinema-nav-meta">
+            <span>Character records</span>
+            <span>Volume / 01</span>
           </div>
-        )}
 
-        {/* Relative Left Side: Navigation & Text Layer */}
-        <div
-          className={`w-full ${isEntity ? "lg:w-[45%] xl:w-[40%]" : "max-w-3xl mx-auto"} flex flex-col py-12 lg:py-20 z-10 h-full`}
-        >
-          <nav
-            className={`w-full flex ${isEntity ? "justify-start" : "justify-center"} mb-16 lg:mb-24`}
-          >
-            <div className="flex flex-wrap gap-8 md:gap-16">
-              {Object.keys(database).map((key) => {
-                const item = database[key];
-                const isActive = activeTab === key;
+          <div className="lore-cinema-nav-items">
+            {Object.keys(database).map((key) => {
+              const item = database[key];
+              const isActive = activeTab === key;
+              const content = (
+                <>
+                  <span>{item.record}</span>
+                  <strong>{item.label}</strong>
+                  <i className={isActive ? "is-active" : ""} />
+                </>
+              );
 
-                const content = (
-                  <>
-                    {item.chapter && (
-                      <div
-                        className={`font-mono text-[9px] tracking-[0.2em] transition-colors duration-500 ${isActive ? "text-neutral-500 dark:text-neutral-400" : "text-neutral-400 dark:text-neutral-700 group-hover:text-neutral-600 dark:group-hover:text-neutral-500"}`}
-                      >
-                        {item.chapter}
-                      </div>
-                    )}
-                    <div
-                      className={`font-serif text-sm md:text-base tracking-[0.1em] transition-colors duration-500 ${isActive ? "text-black dark:text-white" : "text-neutral-400 dark:text-neutral-500 group-hover:text-neutral-700 dark:group-hover:text-neutral-300"}`}
-                    >
-                      {item.label}
-                    </div>
-                    {/* Minimal indicator dot */}
-                    <div
-                      className={`w-1 h-1 rounded-full transition-all duration-500 ${item.chapter ? "mt-2" : "mt-1"} ${isActive ? "bg-black dark:bg-white opacity-100" : "bg-transparent opacity-0"}`}
-                    />
-                  </>
-                );
-
-                if (key === "prologue") {
-                  return (
-                    <Link
-                      to="/lore/the-first-silence"
-                      key={key}
-                      className="group flex flex-col items-center gap-2 relative"
-                    >
-                      {content}
-                    </Link>
-                  );
-                }
-
+              if (key === "prologue") {
                 return (
-                  <button
+                  <Link
+                    to="/lore/the-first-silence"
                     key={key}
-                    onClick={() => setActiveTab(key)}
-                    className="group flex flex-col items-center gap-2 relative"
+                    className="lore-cinema-tab"
                   >
                     {content}
-                  </button>
+                  </Link>
                 );
-              })}
-            </div>
-          </nav>
+              }
 
-          <div className="w-full flex flex-col">
+              return (
+                <button
+                  key={key}
+                  type="button"
+                  onClick={() => setActiveTab(key)}
+                  className="lore-cinema-tab"
+                  aria-pressed={isActive}
+                >
+                  {content}
+                </button>
+              );
+            })}
+          </div>
+        </nav>
+
+        <div className="lore-cinema-spread">
+          <div className="lore-cinema-copy-panel">
             <AnimatePresence
               mode="wait"
               onExitComplete={() => setIsWatermarkHovered(false)}
             >
               <motion.div
                 key={activeTab}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                transition={{ duration: 0.8, ease: "easeInOut" }}
-                className="w-full h-full"
+                initial={{ opacity: 0, y: 12, filter: "blur(7px)" }}
+                animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                exit={{ opacity: 0, y: -10, filter: "blur(7px)" }}
+                transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1] }}
               >
                 {isEntity ? (
                   <StorybookCharacterText
@@ -484,10 +726,26 @@ export default function Lores() {
               </motion.div>
             </AnimatePresence>
           </div>
-        </div>
-      </div>
 
-      {/* The Fan Art Section appended below the absolute flex layout */}
+          {isEntity && (
+            <div className="lore-cinema-visual-panel">
+              <LoreParticleField
+                key={`${activeTab}-particles`}
+                variant={activeTab === "lyune" ? "frost" : "ash"}
+                className="is-character"
+              />
+              <AnimatePresence mode="wait">
+                <StorybookCharacterImage
+                  key={activeTab}
+                  data={currentRecord}
+                  isHovered={isWatermarkHovered}
+                />
+              </AnimatePresence>
+            </div>
+          )}
+        </div>
+      </section>
+
       <FanArtGallery />
     </main>
   );

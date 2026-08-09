@@ -22,7 +22,7 @@ const CONSTELLATION_NODES = [
 ];
 const SCROLL_STAGES = ["INDEX", "TRACE", "SIGNAL", "BLOOM"];
 
-/* Inline redaction — censor bar fitting the hidden word exactly, wiping
+/* Inline redaction: censor bar fitting the hidden word exactly, wiping
    left→right on hover. Stays inline so the line box never jumps. */
 function RedactionText({ children, label, bold = false }) {
   const [isHovered, setIsHovered] = useState(false);
@@ -45,7 +45,7 @@ function RedactionText({ children, label, bold = false }) {
   );
 }
 
-/* Artifact wordmark — inlined so it can be recoloured (red) and animated. */
+/* Artifact wordmark: inlined so it can be recoloured (red) and animated. */
 const ARTIFACT_GLYPH =
   "M1653.54,472.441C1653.54,472.441 2359.49,464.75 1440.94,1181.1C522.397,1897.45 519.685,1889.76 519.685,1889.76C519.685,1889.76 1777.92,1234.55 1771.65,1228.35C1765.38,1222.15 1204.72,944.882 1204.72,944.882C1204.72,944.882 1749.6,1239.52 2173.23,944.882C2596.86,650.247 2503.94,708.661 2503.94,708.661C2503.94,708.661 1431.1,1338.08 2125.98,708.661L2125.98,472.441L1653.54,472.441Z";
 
@@ -390,7 +390,7 @@ function ScrambleText({ active, text, delay = 0, loop = false }) {
   return value;
 }
 
-/* Red sigil / diagram system — an emotional-cartography scan locked to the
+/* Red sigil / diagram system: an emotional-cartography scan locked to the
    artwork. A few marks use negative-x coordinates to reach left into the gap
    (overflow is visible), tying the drawing to the text. */
 function RedSigil({ active }) {
@@ -451,7 +451,7 @@ function RedSigil({ active }) {
         <circle cx="-120" cy="512" r="2.6" fill="currentColor" />
       </motion.g>
 
-      {/* forehead / hairline circle + crosshair — kept clear of the eyes */}
+      {/* forehead / hairline circle + crosshair, kept clear of the eyes */}
       <motion.circle
         cx="332"
         cy="120"
@@ -749,9 +749,7 @@ export function AboutSection() {
           }}
           transition={{ delay: 0.15, duration: 1.05, ease: [0.22, 1, 0.36, 1] }}
         >
-          <span className="about-sketch-radar" aria-hidden="true" />
           <img src={SKETCH_SRC} alt="Hand-drawn character sketch" />
-          <RedSigil active={sketchInView} />
         </motion.figure>
 
         {/* ===== CENTRE GAP ===== */}

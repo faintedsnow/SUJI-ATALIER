@@ -1,8 +1,47 @@
-// components/NavBar.jsx
 import { useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { motion, AnimatePresence } from "motion/react";
-import { LuSun, LuMoon, LuPlay, LuPause } from "react-icons/lu";
+import { AnimatePresence, motion } from "motion/react";
+import { LuMoon, LuPause, LuPlay, LuSun } from "react-icons/lu";
+
+const LINKS = [
+  { label: "Studio + Archive", to: "/studio" },
+  { label: "Lore", to: "/lore" },
+  { label: "Tools", to: "/plugin/eclipse" },
+  { label: "Signal", to: "/contact" },
+  { label: "Links", to: "/link" },
+];
+
+function HeaderSigil() {
+  return (
+    <svg
+      className="site-header-sigil-mark h-6 w-9 overflow-visible fill-none stroke-current stroke-[2.1]"
+      viewBox="0 0 54 38"
+      aria-hidden="true"
+    >
+      <path
+        d="M27 2v14M7 6l13 12M47 6 34 18M3 27l17-5M51 27l-17-5M27 24v12"
+        strokeLinecap="square"
+      />
+    </svg>
+  );
+}
+
+function normalize(pathname) {
+  if (!pathname) return "/";
+  return pathname.endsWith("/") && pathname !== "/"
+    ? pathname.slice(0, -1)
+    : pathname;
+}
+
+function isActive(pathname, target) {
+  if (
+    target === "/studio" &&
+    ["/paramor", "/works"].includes(normalize(pathname))
+  ) {
+    return true;
+  }
+  return normalize(pathname) === normalize(target);
+}
 
 export function NavBar({
   dark,
@@ -12,243 +51,215 @@ export function NavBar({
 }) {
   const [open, setOpen] = useState(false);
   const [playing, setPlaying] = useState(false);
-
   const audioRef = useRef(null);
   const fadeRaf = useRef(null);
   const triedAutoplay = useRef(false);
   const location = useLocation();
 
-  // Prevent background scroll when mobile menu is open
   useEffect(() => {
+    if (!open) return undefined;
     const root = document.documentElement;
-    const prev = root.style.overflow;
-    root.style.overflow = open ? "hidden" : prev || "";
+    const previousOverflow = root.style.overflow;
+    root.style.overflow = "hidden";
     return () => {
-      root.style.overflow = prev || "";
+      root.style.overflow = previousOverflow;
     };
   }, [open]);
-
-  const isMobile = () =>
-    typeof window !== "undefined" &&
-    window.matchMedia?.("(pointer: coarse)")?.matches;
 
   const cancelFade = () => {
     if (fadeRaf.current) cancelAnimationFrame(fadeRaf.current);
     fadeRaf.current = null;
   };
 
-  const fadeTo = (to, ms = 700) => {
-    const el = audioRef.current;
-    if (!el) return;
+  const fadeTo = (target, duration = 700) => {
+    const audio = audioRef.current;
+    if (!audio) return;
     cancelFade();
-    const from = el.volume;
-    const start = performance.now();
-    const tick = (t) => {
-      const k = Math.min(1, (t - start) / ms);
-      el.volume = from + (to - from) * k;
-      if (k < 1) fadeRaf.current = requestAnimationFrame(tick);
+    const initialVolume = audio.volume;
+    const startedAt = performance.now();
+
+    const tick = (time) => {
+      const progress = Math.min(1, (time - startedAt) / duration);
+      audio.volume = initialVolume + (target - initialVolume) * progress;
+      if (progress < 1) fadeRaf.current = requestAnimationFrame(tick);
     };
+
     fadeRaf.current = requestAnimationFrame(tick);
   };
 
-  const doPlay = async () => {
-    const el = audioRef.current;
-    if (!el) return;
-    if (!el.paused && !el.ended) {
+  const play = async () => {
+    const audio = audioRef.current;
+    if (!audio) return;
+    if (!audio.paused && !audio.ended) {
       setPlaying(true);
       return;
     }
+
     try {
-      el.muted = true;
-      el.volume = 0;
-      await el.play();
-      el.muted = false;
+      audio.muted = true;
+      audio.volume = 0;
+      await audio.play();
+      audio.muted = false;
       setPlaying(true);
       fadeTo(targetVolume, 700);
-    } catch {}
+    } catch {
+      setPlaying(false);
+    }
   };
 
-  const doPause = () => {
-    const el = audioRef.current;
-    if (!el) return;
+  const pause = () => {
+    const audio = audioRef.current;
+    if (!audio) return;
     fadeTo(0, 220);
-    setTimeout(() => {
-      el.pause();
+    window.setTimeout(() => {
+      audio.pause();
       setPlaying(false);
     }, 230);
   };
 
-  const togglePlay = async () => {
-    const el = audioRef.current;
-    if (!el) return;
-    !el.paused ? doPause() : await doPlay();
+  const togglePlay = () => {
+    const audio = audioRef.current;
+    if (!audio) return;
+    if (audio.paused) play();
+    else pause();
   };
 
-  // autoplay logic
   useEffect(() => {
-    if (!audioSrc) return;
-    const el = audioRef.current;
-    if (el) {
-      el.loop = true;
-      el.preload = "auto";
-      el.volume = 0;
-      el.playsInline = true;
+    if (!audioSrc) return undefined;
+    const audio = audioRef.current;
+    if (audio) {
+      audio.loop = true;
+      audio.preload = "auto";
+      audio.volume = 0;
+      audio.playsInline = true;
     }
 
-    const tryAuto = () => {
+    const isCoarsePointer = window.matchMedia?.("(pointer: coarse)")?.matches;
+    const tryAutoplay = () => {
       if (triedAutoplay.current) return;
       triedAutoplay.current = true;
-      if (!isMobile()) doPlay();
+      if (!isCoarsePointer) play();
     };
 
-    tryAuto();
-
-    const wake = () => {
-      tryAuto();
-      window.removeEventListener("pointerdown", wake);
-      window.removeEventListener("keydown", wake);
-    };
-    window.addEventListener("pointerdown", wake, { once: true });
-    window.addEventListener("keydown", wake, { once: true });
+    tryAutoplay();
+    window.addEventListener("pointerdown", tryAutoplay, { once: true });
+    window.addEventListener("keydown", tryAutoplay, { once: true });
 
     return () => {
-      window.removeEventListener("pointerdown", wake);
-      window.removeEventListener("keydown", wake);
+      window.removeEventListener("pointerdown", tryAutoplay);
+      window.removeEventListener("keydown", tryAutoplay);
       cancelFade();
     };
   }, [audioSrc]);
 
   useEffect(() => setOpen(false), [location.pathname]);
 
-  const links = [
-    { label: "Archive", to: "/works" },
-    { label: "Lore", to: "/lore" },
-    { label: "Tools", to: "/plugin/eclipse" },
-    { label: "Signal", to: "/contact" },
-    { label: "Links", to: "/link" },
-  ];
-  const brandText = "PurgatorialGarden";
-
   return (
     <header
       className={[
-        "fixed inset-x-0 top-0 z-[9999] border-b transition-all duration-300",
-        "bg-white/80 dark:bg-black/80 backdrop-blur-md h-14 supports-[backdrop-filter]:bg-white/60 supports-[backdrop-filter]:dark:bg-black/60",
-        open ? "border-transparent" : "border-black/5 dark:border-white/5",
+        "site-header fixed inset-x-0 top-0 z-[9999] border-b transition-colors duration-300",
+        open ? "!border-transparent" : "",
       ].join(" ")}
     >
       {audioSrc && <audio ref={audioRef} src={audioSrc} />}
 
-      {/* Top bar */}
-      <div className="relative z-[10000] flex h-14 w-full items-center px-4 sm:px-5 md:px-6">
+      <div className="site-header-inner relative z-[10000] flex h-[var(--header-h)] items-center px-4 sm:px-6">
         <Link
           to="/"
-          aria-label={`${brandText} home`}
-          className="group flex min-w-0 items-center gap-1 text-[13px] font-semibold tracking-[0.02em] outline-none sm:text-[15px] md:text-[17px] md:tracking-wide"
+          className="site-header-brand group flex min-w-0 items-baseline text-current no-underline"
+          aria-label="Faint at PurgatorialGarden, home"
         >
-          <div
-            className="flex max-w-[calc(100vw-8rem)] overflow-hidden whitespace-nowrap sm:max-w-none"
-            aria-hidden="true"
-          >
-            {Array.from(brandText).map((char, i) =>
-              char === " " ? (
-                <span
-                  key={`${char}-${i}`}
-                  className="inline-block w-1.5 sm:w-2"
-                />
-              ) : (
-                <motion.span
-                  key={i}
-                  className="inline-block"
-                  variants={{
-                    initial: { y: 0 },
-                    hover: { y: -3 },
-                  }}
-                  transition={{
-                    type: "spring",
-                    stiffness: 300,
-                    damping: 15,
-                    delay: i * 0.025,
-                  }}
-                >
-                  {char}
-                </motion.span>
-              ),
-            )}
-          </div>
-          <motion.span
-            className="font-redaction inline-block text-[19px] text-neutral-400 group-hover:text-black dark:group-hover:text-white transition-colors duration-300"
-            aria-hidden="true"
-            animate={{ rotate: 360 }}
-            transition={{ duration: 12, repeat: Infinity, ease: "linear" }}
-          >
-            °+
-          </motion.span>
+          <span className="site-header-brand-name text-[14px] font-medium tracking-[-0.045em] sm:text-[16px]">
+            Faint
+          </span>
+          <span className="ml-2 hidden font-mono text-[8px] uppercase tracking-[0.14em] text-[var(--site-muted)] sm:inline">
+            / PurgatorialGarden
+          </span>
+          <span className="relative -top-1 ml-0.5 text-[7px] text-[var(--site-faint)]">
+            ©
+          </span>
         </Link>
 
-        {/* Desktop controls */}
-        <div className="ml-auto hidden items-center gap-3 md:flex">
-          <nav className="font-book flex items-center gap-3 text-[14px] tracking-[0.08em]">
-            {links.map((l) =>
-              l.children ? (
-                <NavDropdown
-                  key={l.label}
-                  label={l.label}
-                  items={l.children}
-                  pathname={location.pathname}
-                />
-              ) : (
-                <NavItem
-                  key={l.to}
-                  to={l.to}
-                  active={normalize(location.pathname) === normalize(l.to)}
+        <Link
+          to="/studio"
+          className="site-header-sigil absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 transition-colors hover:text-[var(--site-ink)] focus-visible:text-[var(--site-ink)]"
+          aria-label="Open studio"
+        >
+          <HeaderSigil />
+        </Link>
+
+        <div className="ml-auto hidden items-center gap-3 lg:flex">
+          <nav className="site-header-nav flex items-center gap-2 font-mono text-[9px] font-medium uppercase tracking-[0.13em]">
+            {LINKS.map((link, index) => (
+              <span key={link.to} className="flex items-center gap-2">
+                <Link
+                  to={link.to}
+                  className={[
+                    "relative py-2 transition-colors",
+                    isActive(location.pathname, link.to)
+                      ? "text-[var(--site-ink)]"
+                      : "text-[var(--site-muted)] hover:text-[var(--site-ink)]",
+                  ].join(" ")}
                 >
-                  {l.label}
-                </NavItem>
-              ),
-            )}
+                  {link.label}
+                  {isActive(location.pathname, link.to) && (
+                    <motion.span
+                      layoutId="global-nav-active"
+                      className="absolute inset-x-0 bottom-0 h-px bg-[var(--site-ink)]"
+                      transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+                    />
+                  )}
+                </Link>
+                {index < LINKS.length - 1 && (
+                  <span className="text-[var(--site-line-strong)]" aria-hidden="true">
+                    /
+                  </span>
+                )}
+              </span>
+            ))}
           </nav>
 
-          <div className="h-5 w-px bg-black/10 dark:bg-white/10" />
+          <span className="h-4 w-px bg-[var(--site-line)]" />
 
           {audioSrc && (
             <button
+              type="button"
               onClick={togglePlay}
-              className="inline-flex items-center gap-2 rounded-full border border-black/10 px-2.5 py-1 text-[12px] hover:bg-neutral-100 active:scale-[0.99] dark:border-white/10 dark:hover:bg-neutral-800 transition-all hover:border-black/20 dark:hover:border-white/20"
+              className="grid h-7 w-7 place-items-center text-[var(--site-muted)] transition-colors hover:text-[var(--site-ink)]"
+              aria-label={playing ? "Pause ambient audio" : "Play ambient audio"}
             >
-              {playing ? <LuPause size={14} /> : <LuPlay size={14} />}
-              {playing ? "Pause" : "Play"}
+              {playing ? <LuPause size={13} /> : <LuPlay size={13} />}
             </button>
           )}
 
           <button
-            onClick={() => setDark((d) => !d)}
-            className="inline-flex items-center gap-1.5 rounded-full border border-black/10 px-2.5 py-1 text-[12px] hover:bg-neutral-100 active:scale-[0.99] dark:border-white/10 dark:hover:bg-neutral-800 transition-all hover:border-black/20 dark:hover:border-white/20"
+            type="button"
+            onClick={() => setDark((value) => !value)}
+            className="grid h-7 w-7 place-items-center text-[var(--site-muted)] transition-colors hover:text-[var(--site-ink)]"
+            aria-label={dark ? "Use light theme" : "Use dark theme"}
           >
             {dark ? <LuSun size={14} /> : <LuMoon size={14} />}
-            {dark ? "Light" : "Dark"}
           </button>
         </div>
 
-        {/* Mobile controls */}
-        <div className="ml-auto flex items-center gap-2 md:hidden">
+        <div className="ml-auto flex items-center gap-1 lg:hidden">
           <button
-            onClick={() => setDark((d) => !d)}
-            className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-black/10 hover:bg-neutral-100 active:scale-[0.99] dark:border-white/10 dark:hover:bg-neutral-800"
-            aria-label="Toggle theme"
+            type="button"
+            onClick={() => setDark((value) => !value)}
+            className="grid h-8 w-8 place-items-center text-[var(--site-muted)]"
+            aria-label={dark ? "Use light theme" : "Use dark theme"}
           >
-            {dark ? <LuSun size={16} /> : <LuMoon size={16} />}
+            {dark ? <LuSun size={15} /> : <LuMoon size={15} />}
           </button>
-
-          {/* bars → X */}
           <button
-            onClick={() => setOpen((o) => !o)}
+            type="button"
+            onClick={() => setOpen((value) => !value)}
+            className="relative grid h-8 w-8 place-items-center"
             aria-expanded={open}
             aria-label={open ? "Close menu" : "Open menu"}
-            className="relative inline-flex h-9 w-9 items-center justify-center rounded-full border border-black/10 hover:bg-neutral-100 active:scale-[0.99] dark:border-white/10 dark:hover:bg-neutral-800"
           >
             <span
-              className="absolute block h-[2px] w-4 rounded-full bg-current transition-transform duration-200 will-change-transform"
+              className="absolute h-px w-4 bg-current transition-transform duration-200"
               style={{
                 transform: open
                   ? "translateY(0) rotate(45deg)"
@@ -256,7 +267,7 @@ export function NavBar({
               }}
             />
             <span
-              className="absolute block h-[2px] w-4 rounded-full bg-current transition-transform duration-200 will-change-transform"
+              className="absolute h-px w-4 bg-current transition-transform duration-200"
               style={{
                 transform: open
                   ? "translateY(0) rotate(-45deg)"
@@ -267,192 +278,59 @@ export function NavBar({
         </div>
       </div>
 
-      {/* Mobile full-screen content */}
       <AnimatePresence>
         {open && (
           <motion.nav
-            key="mobile-full"
-            initial={{ opacity: 0, y: 10 }}
+            key="global-mobile-menu"
+            initial={{ opacity: 0, y: -8 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 10 }}
+            exit={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-            className="fixed inset-0 z-[9998] h-[100dvh] w-screen bg-white dark:bg-black md:hidden flex flex-col items-center justify-center"
-            style={{
-              paddingTop: "3.5rem", // match header height (h-14)
-            }}
+            className="fixed inset-0 z-[9998] flex h-[100dvh] w-screen flex-col bg-[var(--site-bg)] px-6 pb-7 pt-20 text-[var(--site-ink)] lg:hidden"
           >
-            <ul className="font-book flex flex-col items-center gap-8 text-3xl font-normal tracking-[0.08em]">
-              {links.map((l, i) =>
-                l.children ? (
-                  <motion.li
-                    key={l.label}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.1 + i * 0.05, duration: 0.4 }}
-                    className="flex flex-col items-center gap-3"
+            <ul className="my-auto flex flex-col gap-3 font-redaction text-[clamp(2.6rem,10vw,4.4rem)] leading-[0.95] tracking-[-0.045em]">
+              {LINKS.map((link, index) => (
+                <motion.li
+                  key={link.to}
+                  initial={{ opacity: 0, x: -12 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.04 + index * 0.035, duration: 0.35 }}
+                >
+                  <Link
+                    to={link.to}
+                    className={
+                      isActive(location.pathname, link.to)
+                        ? "text-[var(--site-ink)]"
+                        : "text-[var(--site-muted)]"
+                    }
                   >
-                    <span className="text-neutral-400 dark:text-neutral-600 text-base font-mono tracking-widest uppercase">
-                      {l.label}
+                    <span className="mr-3 align-middle font-mono text-[8px] tracking-[0.16em] text-[var(--site-faint)]">
+                      {String(index + 1).padStart(2, "0")}
                     </span>
-                    {l.children.map((child) => (
-                      <Link
-                        key={child.to}
-                        to={child.to}
-                        onClick={() => setOpen(false)}
-                        className="relative block p-2 hover:text-neutral-500 transition-colors"
-                      >
-                        {child.label}
-                      </Link>
-                    ))}
-                  </motion.li>
-                ) : (
-                  <motion.li
-                    key={l.to}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.1 + i * 0.05, duration: 0.4 }}
-                  >
-                    <Link
-                      to={l.to}
-                      onClick={() => setOpen(false)}
-                      className="relative block p-2 hover:text-neutral-500 transition-colors"
-                    >
-                      {l.label}
-                    </Link>
-                  </motion.li>
-                ),
-              )}
+                    {link.label}
+                  </Link>
+                </motion.li>
+              ))}
             </ul>
+
+            <div className="flex items-center justify-between border-t border-[var(--site-line)] pt-4 font-mono text-[9px] uppercase tracking-[0.16em]">
+              <span className="text-[var(--site-faint)]">PurgatorialGarden</span>
+              {audioSrc && (
+                <button
+                  type="button"
+                  onClick={togglePlay}
+                  className="flex items-center gap-2"
+                >
+                  {playing ? <LuPause size={12} /> : <LuPlay size={12} />}
+                  {playing ? "Pause sound" : "Play sound"}
+                </button>
+              )}
+            </div>
           </motion.nav>
         )}
       </AnimatePresence>
     </header>
   );
-}
-
-/* ---------- subcomponents ---------- */
-
-function NavDropdown({ label, items, pathname }) {
-  const [open, setOpen] = useState(false);
-  const ref = useRef(null);
-  const isChildActive = items.some(
-    (c) => normalize(pathname) === normalize(c.to),
-  );
-
-  useEffect(() => {
-    const close = (e) => {
-      if (ref.current && !ref.current.contains(e.target)) setOpen(false);
-    };
-    document.addEventListener("pointerdown", close);
-    return () => document.removeEventListener("pointerdown", close);
-  }, []);
-
-  return (
-    <div ref={ref} className="relative">
-      <button
-        onClick={() => setOpen((o) => !o)}
-        className={`relative rounded-full px-3 py-1 outline-none transition-colors text-[13px] flex items-center gap-1 ${
-          isChildActive
-            ? "text-black dark:text-white"
-            : "text-neutral-500 hover:text-black dark:text-neutral-500 dark:hover:text-white"
-        }`}
-      >
-        <motion.span
-          className="relative z-10"
-          whileHover={{ y: -1 }}
-          transition={{ type: "spring", stiffness: 300, damping: 20 }}
-        >
-          {label}
-        </motion.span>
-        <svg
-          className={`w-3 h-3 transition-transform duration-200 ${open ? "rotate-180" : ""}`}
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-          strokeWidth={2}
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M19 9l-7 7-7-7"
-          />
-        </svg>
-        <AnimatePresence>
-          {isChildActive && (
-            <motion.span
-              layoutId="nav-pill"
-              className="absolute inset-0 rounded-full bg-black/5 dark:bg-white/10 -z-0"
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.9 }}
-              transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
-            />
-          )}
-        </AnimatePresence>
-      </button>
-      <AnimatePresence>
-        {open && (
-          <motion.div
-            initial={{ opacity: 0, y: 6 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 6 }}
-            transition={{ duration: 0.2 }}
-            className="absolute top-full left-0 mt-2 min-w-[140px] rounded-lg border border-black/5 dark:border-white/10 bg-white dark:bg-neutral-900 shadow-lg py-1"
-          >
-            {items.map((child) => (
-              <Link
-                key={child.to}
-                to={child.to}
-                onClick={() => setOpen(false)}
-                className="block px-4 py-2 text-[13px] text-neutral-600 dark:text-neutral-400 hover:text-black dark:hover:text-white hover:bg-neutral-50 dark:hover:bg-neutral-800 transition-colors"
-              >
-                {child.label}
-              </Link>
-            ))}
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
-  );
-}
-
-function NavItem({ to, children, active }) {
-  return (
-    <Link
-      to={to}
-      className={`relative rounded-full px-3 py-1 outline-none transition-colors ${
-        active
-          ? "text-black dark:text-white"
-          : "text-neutral-500 hover:text-black dark:text-neutral-500 dark:hover:text-white"
-      }`}
-    >
-      <motion.span
-        className="relative z-10"
-        whileHover={{ y: -1 }}
-        transition={{ type: "spring", stiffness: 300, damping: 20 }}
-      >
-        {children}
-      </motion.span>
-
-      <AnimatePresence>
-        {active && (
-          <motion.span
-            layoutId="nav-pill"
-            className="absolute inset-0 rounded-full bg-black/5 dark:bg-white/10 -z-0"
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.9 }}
-            transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
-          />
-        )}
-      </AnimatePresence>
-    </Link>
-  );
-}
-
-function normalize(p) {
-  if (!p) return "/";
-  return p.endsWith("/") && p !== "/" ? p.slice(0, -1) : p;
 }
 
 export default NavBar;

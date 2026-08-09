@@ -1,5 +1,4 @@
-import { useRef } from "react";
-import { motion, useScroll, useTransform } from "motion/react";
+import { motion, useScroll } from "motion/react";
 import { Link } from "react-router-dom";
 
 const PANELS = [
@@ -42,30 +41,21 @@ const PANELS = [
 
 export default function TheFirstSilence() {
   const { scrollYProgress } = useScroll();
-  const progressBarBackground = useTransform(
-    scrollYProgress,
-    [0, 1],
-    ["rgba(255,255,255,0)", "rgba(255,255,255,0.8)"],
-  );
-
   return (
-    <div className="bg-[#050505] min-h-screen font-serif text-neutral-300 relative selection:bg-white/20 selection:text-white">
+    <div className="site-page relative min-h-screen pt-[var(--header-h)] font-serif text-[var(--site-muted)] selection:bg-black/10 selection:text-[var(--site-ink)] dark:selection:bg-white/20">
       {/* Scroll Progress Bar */}
       <motion.div
-        className="fixed top-0 left-0 right-0 h-1 z-50 origin-left"
-        style={{
-          scaleX: scrollYProgress,
-          backgroundColor: progressBarBackground,
-        }}
+        className="fixed left-0 right-0 top-[var(--header-h)] z-50 h-px origin-left bg-[var(--site-accent)]"
+        style={{ scaleX: scrollYProgress }}
       />
 
       {/* Navigation Return */}
-      <div className="fixed top-8 left-8 z-50">
+      <div className="fixed left-4 top-[calc(var(--header-h)+1.25rem)] z-50 sm:left-8">
         <Link
           to="/lore"
-          className="text-xs font-mono tracking-widest uppercase text-neutral-500 hover:text-white transition-colors flex items-center gap-2"
+          className="flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-[var(--site-faint)] transition-colors hover:text-[var(--site-ink)]"
         >
-          <span>?</span> Back to Chronicles
+          <span aria-hidden="true">←</span> Back to Chronicles
         </Link>
       </div>
 
@@ -77,13 +67,13 @@ export default function TheFirstSilence() {
           transition={{ duration: 1.2, ease: "easeOut" }}
           className="text-center"
         >
-          <div className="font-mono text-[10px] tracking-[0.6em] text-neutral-500 uppercase mb-6">
+          <div className="font-mono text-[10px] tracking-[0.6em] text-[var(--site-faint)] uppercase mb-6">
             prologue
           </div>
-          <h1 className="text-4xl md:text-6xl lg:text-7xl font-light text-white tracking-[0.15em] uppercase mb-8">
+          <h1 className="text-4xl md:text-6xl lg:text-7xl font-light text-[var(--site-ink)] tracking-[0.15em] uppercase mb-8">
             The First Silence
           </h1>
-          <div className="w-[1px] h-24 bg-gradient-to-b from-neutral-500 to-transparent mx-auto" />
+          <div className="w-[1px] h-24 bg-gradient-to-b from-[var(--site-faint)] to-transparent mx-auto" />
         </motion.div>
       </section>
 
@@ -98,11 +88,11 @@ export default function TheFirstSilence() {
             transition={{ duration: 1.5, ease: "easeOut" }}
             className="w-full lg:w-[55%] relative group"
           >
-            <div className="absolute -inset-4 bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-1000 blur-xl" />
+            <div className="absolute -inset-4 bg-black/5 opacity-0 dark:bg-white/5 group-hover:opacity-100 transition-opacity duration-1000 blur-xl" />
             <img
               src={PANELS[0].src}
               alt={PANELS[0].alt}
-              className="w-full h-auto aspect-[16/9] object-cover border border-white/10 shadow-2xl relative z-10"
+              className="w-full h-auto aspect-[16/9] object-cover border border-[var(--site-line)] shadow-2xl relative z-10"
             />
           </motion.div>
 
@@ -116,8 +106,8 @@ export default function TheFirstSilence() {
                 transition={{ duration: 1, delay: i * 0.15 }}
                 className={
                   paragraph.includes("divine punishment")
-                    ? "text-red-50/80 italic font-light"
-                    : "text-neutral-400"
+                    ? "text-[var(--site-accent)] italic font-light"
+                    : "text-[var(--site-muted)]"
                 }
               >
                 {paragraph}
@@ -138,8 +128,8 @@ export default function TheFirstSilence() {
                 transition={{ duration: 1, delay: i * 0.15 }}
                 className={
                   paragraph.includes("dust")
-                    ? "text-2xl lg:text-3xl text-white my-4 font-light tracking-wide"
-                    : "text-neutral-400"
+                    ? "my-4 text-2xl font-light tracking-wide text-[var(--site-ink)] lg:text-3xl"
+                    : "text-[var(--site-muted)]"
                 }
               >
                 {paragraph}
@@ -154,11 +144,11 @@ export default function TheFirstSilence() {
             transition={{ duration: 1.5, ease: "easeOut" }}
             className="w-full lg:w-[60%] relative group"
           >
-            <div className="absolute -inset-4 bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-1000 blur-xl" />
+            <div className="absolute -inset-4 bg-black/5 opacity-0 dark:bg-white/5 group-hover:opacity-100 transition-opacity duration-1000 blur-xl" />
             <img
               src={PANELS[1].src}
               alt={PANELS[1].alt}
-              className="w-full h-auto aspect-[4/3] object-cover border border-white/10 shadow-2xl grayscale hover:grayscale-0 transition-all duration-[2s] relative z-10"
+              className="w-full h-auto aspect-[4/3] object-cover border border-[var(--site-line)] shadow-2xl grayscale hover:grayscale-0 transition-all duration-[2s] relative z-10"
             />
           </motion.div>
         </section>
@@ -175,7 +165,7 @@ export default function TheFirstSilence() {
             <img
               src={PANELS[2].src}
               alt={PANELS[2].alt}
-              className="w-full h-auto object-cover border border-white/10 shadow-2xl relative z-10"
+              className="w-full h-auto object-cover border border-[var(--site-line)] shadow-2xl relative z-10"
             />
           </motion.div>
 
@@ -191,7 +181,7 @@ export default function TheFirstSilence() {
                   viewport={{ once: true, margin: "-10%" }}
                   transition={{ duration: 1.2, delay: i * 0.2 }}
                   className={`
-                    ${isClimax ? "text-4xl md:text-5xl lg:text-6xl text-white font-thin tracking-widest uppercase mt-8" : "text-neutral-400"}
+                    ${isClimax ? "text-4xl md:text-5xl lg:text-6xl text-[var(--site-ink)] font-thin tracking-widest uppercase mt-8" : "text-[var(--site-muted)]"}
                   `}
                 >
                   {paragraph}
@@ -210,14 +200,14 @@ export default function TheFirstSilence() {
         transition={{ duration: 2 }}
         className="w-full flex flex-col items-center justify-center pb-20 gap-8"
       >
-        <div className="w-2 h-2 rounded-full bg-white/30" />
-        <div className="text-[11px] font-mono tracking-[0.3em] text-neutral-600 uppercase">
+        <div className="w-2 h-2 rounded-full bg-[var(--site-line-strong)]" />
+        <div className="text-[11px] font-mono tracking-[0.3em] text-[var(--site-faint)] uppercase">
           Art by{" "}
           <a
             href="https://twitter.com/hehehahaartowo"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-neutral-400 hover:text-white transition-colors"
+            className="text-[var(--site-muted)] transition-colors hover:text-[var(--site-ink)]"
           >
             @hehehahaartowo
           </a>

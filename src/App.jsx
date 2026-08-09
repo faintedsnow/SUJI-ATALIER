@@ -14,6 +14,7 @@ import TheFirstSilence from "./sections/lore/TheFirstSilence";
 import Eclipse from "./pages/Eclipse";
 import Contact from "./pages/Contact";
 import Links from "./pages/Links"; // ✅ renamed import
+import Studio from "./pages/Studio";
 
 export default function App() {
   const [loading, setLoading] = useState(true);
@@ -47,21 +48,18 @@ export default function App() {
     <>
       {loading && <LoadingScreen onFinished={handleLoadFinished} />}
       <motion.div
-        className={
-          (dark
-            ? "dark bg-neutral-950 text-neutral-100"
-            : "bg-neutral-50 text-neutral-900") +
-          " min-h-dvh flex flex-col cursor-auto md:cursor-none"
-        }
+        className={`${dark ? "dark" : ""} site-shell min-h-dvh flex flex-col cursor-auto md:cursor-none`}
         initial={{ opacity: 0 }}
         animate={{ opacity: loading ? 0 : 1 }}
-        transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
+        transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1] }}
       >
         <CustomCursor />
         <NavBar dark={dark} setDark={setDark} />
         <div className="flex-1">
           <Routes>
             <Route path="/" element={<Home dark={dark} />} />
+            <Route path="/studio" element={<Studio />} />
+            <Route path="/paramor" element={<Studio />} />
             <Route path="/works" element={<Works />} />
             <Route path="/about" element={<About />} />
             <Route path="/lore" element={<Lores />} />
@@ -75,7 +73,7 @@ export default function App() {
           </Routes>
         </div>
 
-        <footer className="font-pixel border-t border-black/5 dark:border-white/5 py-8 text-center text-xs text-neutral-500 dark:text-neutral-400">
+        <footer className="site-footer border-t py-7 text-center font-pixel text-xs">
           © {new Date().getFullYear()} PurgatorialGarden. All rights reserved.
         </footer>
       </motion.div>

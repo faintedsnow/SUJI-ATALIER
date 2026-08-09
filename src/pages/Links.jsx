@@ -12,8 +12,6 @@ import {
 } from "react-icons/fa";
 
 /** ====== CONFIG ====== **/
-const ACCENT = "#8A0303"; // match About/Contact/Works
-
 const LINKS = [
   {
     label: "Spotify",
@@ -97,12 +95,12 @@ export default function Links() {
 
   return (
     <main
-      className="relative px-4 pt-20 pb-24 sm:px-6 font-libre text-neutral-800 dark:text-neutral-200"
-      style={{ ["--accent"]: ACCENT }}
+      className="site-page relative min-h-screen px-4 pb-24 pt-[calc(var(--header-h)+2rem)] font-libre sm:px-6"
+      style={{ ["--accent"]: "var(--site-accent)" }}
     >
       {/* subtle fog (same as other pages) */}
       <div
-        className="pointer-events-none absolute inset-0 top-0 h-[40vh] bg-gradient-to-b from-neutral-100/70 to-transparent dark:from-neutral-900/70"
+        className="pointer-events-none absolute inset-0 top-0 h-[40vh] bg-gradient-to-b from-[var(--site-surface)]/70 to-transparent"
         aria-hidden="true"
       />
 
@@ -122,15 +120,13 @@ export default function Links() {
         />
 
         {/* Subtitle + Discord copy */}
-        <p className="text-sm text-neutral-600 dark:text-neutral-400">
+        <p className="text-sm text-[var(--site-muted)]">
           official links · minimal &amp; clean
         </p>
         <div className="mt-4 flex justify-center">
           <button
             onClick={copyDiscord}
-            className="inline-flex items-center gap-2 rounded-full border border-neutral-200 dark:border-neutral-800
-                       bg-white/60 dark:bg-neutral-900/40 backdrop-blur px-3 py-1.5 text-xs
-                       hover:bg-white dark:hover:bg-neutral-800 transition-colors"
+            className="site-surface inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-xs backdrop-blur transition-colors hover:bg-[var(--site-surface-strong)]"
             aria-label="Copy Discord handle"
           >
             <FaDiscord className="text-[12px]" aria-hidden />
@@ -152,17 +148,13 @@ export default function Links() {
               target="_blank"
               rel="noreferrer noopener"
               variants={item}
-              className="group flex items-center justify-between gap-3 rounded-xl
-                         border border-neutral-200 dark:border-neutral-800
-                         bg-white/60 dark:bg-neutral-900/40 backdrop-blur
-                         px-4 sm:px-5 py-4 transition-colors
-                         hover:bg-white dark:hover:bg-neutral-800"
+              className="site-surface group flex items-center justify-between gap-3 rounded-xl border px-4 py-4 backdrop-blur transition-colors hover:bg-[var(--site-surface-strong)] sm:px-5"
               aria-label={`${label} (opens in new tab)`}
             >
               <span className="flex items-center gap-3">
                 <span
                   aria-hidden
-                  className="grid place-items-center size-8 rounded-full border border-neutral-200 dark:border-neutral-800"
+                  className="grid size-8 place-items-center rounded-full border border-[var(--site-line)]"
                 >
                   <Icon className="text-[14px]" />
                 </span>
@@ -181,7 +173,7 @@ export default function Links() {
         </motion.nav>
 
         {/* Tiny outro (optional, matches tone) */}
-        <p className="mt-10 text-sm italic text-neutral-500 dark:text-neutral-400">
+        <p className="mt-10 text-sm italic text-[var(--site-faint)]">
           “Find me where the echoes live.”
         </p>
       </section>
